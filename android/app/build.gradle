@@ -1,0 +1,58 @@
+plugins {
+    id "com.android.application"
+    id "kotlin-android"
+    // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
+    id "dev.flutter.flutter-gradle-plugin"
+}
+
+android {
+    namespace = "com.example.flutter_2024_09_22"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = JavaVersion.VERSION_1_8
+    }
+
+    defaultConfig {
+        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        applicationId = "com.example.flutter_2024_09_22"
+        // You can update the following values to match your application needs.
+        // For more information, see: https://flutter.dev/to/review-gradle-config.
+        minSdk = flutter.minSdkVersion
+        targetSdk = flutter.targetSdkVersion
+        versionCode = flutter.versionCode
+        versionName = flutter.versionName
+    }
+
+       signingConfigs {
+            release {
+        storeFile file('./keystore/myapp_keystore.jks')  // 使用相对路径
+        storePassword '20041009'  // keystore 密码
+        keyAlias 'myapp_key'  // 密钥别名
+        keyPassword '20041009'  // 密钥密码
+    }
+}
+
+
+    buildTypes {
+        release {
+            signingConfig signingConfigs.release  // 使用 release 签名配置
+        }
+        debug {
+            signingConfig signingConfigs.debug  // 保持 debug 配置
+        }
+    
+    }
+
+
+}
+
+flutter {
+    source = "../.."
+}
