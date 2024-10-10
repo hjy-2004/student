@@ -6,7 +6,7 @@ class SettingsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('设置')),
+      appBar: AppBar(title: Text('sz')),
       body: ListView(
         children: [
           ListTile(
