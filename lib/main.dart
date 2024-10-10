@@ -1,18 +1,43 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart'; // 导入
+// ignore: unused_import
+import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'home_page.dart';
+import 'l10n/app_localizations.dart';
 import 'login_page.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => LocaleNotifier(),
+      child: MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: SplashScreen(),
+    return Consumer<LocaleNotifier>(
+      builder: (context, localeNotifier, child) {
+        return MaterialApp(
+          home: SplashScreen(),
+          locale: localeNotifier.currentLocale, // 设置当前的 locale
+          localizationsDelegates: [
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+            AppLocalizations.delegate, // 添加你的本地化委托
+          ],
+          supportedLocales: [
+            const Locale('en', ''), // 英语
+            const Locale('zh', ''), // 中文
+          ],
+        );
+      },
     );
   }
 }
@@ -79,5 +104,17 @@ class _SplashScreenState extends State<SplashScreen> {
         ),
       ),
     );
+  }
+}
+
+class LocaleNotifier extends ChangeNotifier {
+  Locale _currentLocale = Locale('zh');
+
+  Locale get currentLocale => _currentLocale;
+
+  void setLocale(Locale newLocale) {
+    _currentLocale = newLocale;
+    notifyListeners();
+    print('Locale changed to: ${newLocale.languageCode}'); // Debugging
   }
 }

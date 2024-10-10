@@ -4,9 +4,12 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 
 import 'grades_management_screen.dart';
 import 'historical_events.dart';
+import 'l10n/app_localizations.dart';
+import 'main.dart';
 import 'personal_center.dart';
 
 class HomePage extends StatefulWidget {
@@ -27,16 +30,42 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('学生成绩管理系统'), backgroundColor: Colors.amber),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.appTitle),
+        backgroundColor: Colors.amber,
+        actions: [
+          PopupMenuButton<Locale>(
+            onSelected: (Locale locale) {
+              Provider.of<LocaleNotifier>(context, listen: false)
+                  .setLocale(locale);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<Locale>(
+                    value: Locale('en', ''), child: Text('English')),
+                PopupMenuItem<Locale>(
+                    value: Locale('zh', ''), child: Text('中文')),
+              ];
+            },
+          ),
+        ],
+      ),
       body: IndexedStack(index: _currentIndex, children: _pages),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.amber,
         items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: '首页'),
-          BottomNavigationBarItem(icon: Icon(Icons.assignment), label: '成绩管理'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.history_edu_rounded), label: '历史上的今天'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: '个人中心'),
+              icon: Icon(Icons.home),
+              label: AppLocalizations.of(context)!.home),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.assignment),
+              label: AppLocalizations.of(context)!.gradesManagement),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.history_edu_rounded),
+              label: AppLocalizations.of(context)!.historicalEvents),
+          BottomNavigationBarItem(
+              icon: Icon(Icons.person),
+              label: AppLocalizations.of(context)!.personalCenter),
         ],
         currentIndex: _currentIndex,
         selectedItemColor: Colors.white,
@@ -98,7 +127,7 @@ class _HomeScreenState extends State<HomeScreen> {
         if (_currentPage < imageList.length - 1) {
           _currentPage++;
         } else {
-          _currentPage = 0; // 回到第一张
+          _currentPage = 0;
         }
         _pageController.animateToPage(
           _currentPage,
@@ -167,6 +196,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return SingleChildScrollView(
       child: Column(
         children: [
+          // 将轮播图移到最上面
           Stack(
             alignment: Alignment.bottomCenter,
             children: [
@@ -233,7 +263,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('神回复',
+                  Text(AppLocalizations.of(context)!.shenhuifuTitle, // 使用本地化文本
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
                   SizedBox(height: 8),
@@ -242,38 +272,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     alignment: Alignment.centerRight,
                     child: TextButton(
                       onPressed: _refreshShenhuifu,
-                      child: Text('换一换'),
+                      child: Text(
+                          AppLocalizations.of(context)!.refresh), // 使用本地化文本
                     ),
                   ),
                 ],
               ),
             ),
           ),
-          Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16.0),
-            ),
-            elevation: 5,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text('毒鸡汤不够？名人名言来凑',
-                      style:
-                          TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
-                  SizedBox(height: 8),
-                  Text(_mingrenmingyan),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: TextButton(
-                      onPressed: _refreshMingrenmingyan,
-                      child: Text('换一换'),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+          QuoteCard(
+            title: AppLocalizations.of(context)!.famousQuotesTitle, // 使用本地化文本
+            content: _mingrenmingyan,
+            onRefresh: _refreshMingrenmingyan,
           ),
           Card(
             shape: RoundedRectangleBorder(
@@ -302,6 +312,48 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class QuoteCard extends StatelessWidget {
+  final String title;
+  final String content;
+  final VoidCallback onRefresh;
+
+  const QuoteCard({
+    Key? key,
+    required this.title,
+    required this.content,
+    required this.onRefresh,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(16.0),
+      ),
+      elevation: 5,
+      child: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(title,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+            SizedBox(height: 8),
+            Text(content),
+            Align(
+              alignment: Alignment.centerRight,
+              child: TextButton(
+                onPressed: onRefresh,
+                child: Text(AppLocalizations.of(context)!.refresh), // 使用本地化文本
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

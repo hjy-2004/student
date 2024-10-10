@@ -6,6 +6,7 @@ import 'package:flutter_2024_09_22/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account_management.dart';
+import 'l10n/app_localizations.dart';
 import 'notebook_page.dart';
 import 'profile_page.dart';
 
@@ -75,6 +76,9 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final localizations =
+        AppLocalizations.of(context)!; // Get the localizations instance
+
     return Container(
       color: Colors.white,
       child: Padding(
@@ -94,7 +98,7 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
                     children: [
                       CircleAvatar(
                         radius: 30,
-                        backgroundImage: avatarPath != null // 检查头像路径是否存在
+                        backgroundImage: avatarPath != null
                             ? FileImage(File(avatarPath!))
                             : AssetImage('images/2.jpg') as ImageProvider,
                       ),
@@ -129,7 +133,8 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
                         color: Colors.grey,
                       ),
                       SizedBox(width: 10),
-                      Text('设置', style: TextStyle(fontSize: 15)),
+                      Text(localizations.settings,
+                          style: TextStyle(fontSize: 15)),
                     ],
                   ),
                   Icon(
@@ -156,7 +161,10 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
                         color: Colors.green[400],
                       ),
                       SizedBox(width: 10),
-                      Text('笔记本', style: TextStyle(fontSize: 15)),
+                      Text(localizations.notebook,
+                          style: TextStyle(
+                              fontSize:
+                                  15)), // Assuming you added this in localizations
                     ],
                   ),
                   Icon(
@@ -191,16 +199,19 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
   }
 
   void _showSettingsDialog(BuildContext context) {
+    final localizations = AppLocalizations.of(context)!; // Get localizations
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('设置'),
+          title: Text(localizations.settings), // Use localized title
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               ListTile(
-                title: Text('账号管理'),
+                title: Text(
+                    localizations.accountManagement), // Use localized string
                 onTap: () {
                   Navigator.of(context).pop(); // 关闭对话框
                   _showAccountManagement(context);
@@ -213,7 +224,7 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
               onPressed: () {
                 Navigator.of(context).pop(); // 关闭对话框
               },
-              child: Text('关闭'),
+              child: Text(localizations.close), // Use localized close text
             ),
           ],
         );

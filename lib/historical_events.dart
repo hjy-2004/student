@@ -1,28 +1,11 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
-  runApp(MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: '历史上的今天',
-      theme: ThemeData(
-        textTheme: TextTheme(
-          headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-          titleMedium: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-          bodyMedium: TextStyle(fontSize: 16),
-        ),
-      ),
-      home: HistoricalEventsScreen(),
-    );
-  }
-}
+import 'l10n/app_localizations.dart';
+import 'main.dart';
 
 class HistoricalEventsScreen extends StatefulWidget {
   @override
@@ -91,51 +74,56 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('历史上的今天'),
-        centerTitle: true,
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '今天是: $currentDate',
-              style: Theme.of(context).textTheme.headlineSmall,
+    return Consumer<LocaleNotifier>(
+      builder: (context, localeNotifier, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: Text(AppLocalizations.of(context)!.historicalToday),
+            centerTitle: true,
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '${AppLocalizations.of(context)!.todayIs}: $currentDate',
+                  style: Theme.of(context).textTheme.headlineSmall,
+                ),
+                SizedBox(height: 20),
+                Text(
+                  AppLocalizations.of(context)!.historicalEventsOccurred,
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                SizedBox(height: 10),
+                historicalEvents.isNotEmpty
+                    ? Expanded(
+                        child: RefreshIndicator(
+                          onRefresh: _refreshData,
+                          child: ListView.builder(
+                            itemCount: historicalEvents.length,
+                            itemBuilder: (context, index) {
+                              return Card(
+                                margin: EdgeInsets.symmetric(vertical: 5),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(10.0),
+                                  child: Text(
+                                    historicalEvents[index],
+                                    style:
+                                        Theme.of(context).textTheme.bodyMedium,
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                      )
+                    : Center(child: CircularProgressIndicator()),
+              ],
             ),
-            SizedBox(height: 20),
-            Text(
-              '历史上的今天发生了:',
-              style: Theme.of(context).textTheme.titleMedium,
-            ),
-            SizedBox(height: 10),
-            historicalEvents.isNotEmpty
-                ? Expanded(
-                    child: RefreshIndicator(
-                      onRefresh: _refreshData,
-                      child: ListView.builder(
-                        itemCount: historicalEvents.length,
-                        itemBuilder: (context, index) {
-                          return Card(
-                            margin: EdgeInsets.symmetric(vertical: 5),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Text(
-                                historicalEvents[index],
-                                style: Theme.of(context).textTheme.bodyMedium,
-                              ),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  )
-                : Center(child: CircularProgressIndicator()),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

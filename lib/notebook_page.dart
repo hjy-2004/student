@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'l10n/app_localizations.dart'; // 更新为你的路径
+
 class NotebookPage extends StatefulWidget {
   @override
   _NotebookPageState createState() => _NotebookPageState();
@@ -69,7 +71,7 @@ class _NotebookPageState extends State<NotebookPage> {
     File noteFile = File('$path/$title.txt');
     await noteFile.writeAsString(content);
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("笔记保存成功")),
+      SnackBar(content: Text(AppLocalizations.of(context)!.noteSaved)),
     );
 
     setState(() {
@@ -93,7 +95,7 @@ class _NotebookPageState extends State<NotebookPage> {
       notes.removeAt(index); // 从列表中删除笔记
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("笔记已删除")),
+      SnackBar(content: Text(AppLocalizations.of(context)!.noteDeleted)),
     );
     _persistNotes(); // 更新笔记顺序
   }
@@ -126,19 +128,21 @@ class _NotebookPageState extends State<NotebookPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('修改笔记'),
+          title: Text(AppLocalizations.of(context)!.editNote),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(hintText: '输入笔记标题'),
+                decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.inputNoteTitle),
               ),
               SizedBox(height: 10),
               TextField(
                 controller: contentController,
                 maxLines: 5,
-                decoration: InputDecoration(hintText: '输入笔记内容'),
+                decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.inputNoteContent),
               ),
             ],
           ),
@@ -152,15 +156,17 @@ class _NotebookPageState extends State<NotebookPage> {
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("标题和内容不能为空")),
+                    SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.titleContentEmpty)),
                   );
                 }
               },
-              child: Text('保存'),
+              child: Text(AppLocalizations.of(context)!.save),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ],
         );
@@ -176,7 +182,7 @@ class _NotebookPageState extends State<NotebookPage> {
     // 持久化顺序到本地
     _persistNotes();
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text("笔记已置顶")),
+      SnackBar(content: Text(AppLocalizations.of(context)!.notePinned)),
     );
   }
 
@@ -187,21 +193,21 @@ class _NotebookPageState extends State<NotebookPage> {
         return ListView(
           children: [
             ListTile(
-              title: Text('修改'),
+              title: Text(AppLocalizations.of(context)!.editNote),
               onTap: () {
                 Navigator.of(context).pop();
                 _showEditNoteDialog(index);
               },
             ),
             ListTile(
-              title: Text('删除'),
+              title: Text(AppLocalizations.of(context)!.noteDeleted),
               onTap: () {
                 Navigator.of(context).pop();
                 _deleteNote(index);
               },
             ),
             ListTile(
-              title: Text('置顶'),
+              title: Text(AppLocalizations.of(context)!.notePinned),
               onTap: () {
                 Navigator.of(context).pop();
                 _togglePinNote(index);
@@ -221,19 +227,21 @@ class _NotebookPageState extends State<NotebookPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('新增笔记'),
+          title: Text(AppLocalizations.of(context)!.addNote),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: titleController,
-                decoration: InputDecoration(hintText: '输入笔记标题'),
+                decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.inputNoteTitle),
               ),
               SizedBox(height: 10),
               TextField(
                 controller: contentController,
                 maxLines: 5,
-                decoration: InputDecoration(hintText: '输入笔记内容'),
+                decoration: InputDecoration(
+                    hintText: AppLocalizations.of(context)!.inputNoteContent),
               ),
             ],
           ),
@@ -247,15 +255,17 @@ class _NotebookPageState extends State<NotebookPage> {
                   Navigator.of(context).pop();
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("标题和内容不能为空")),
+                    SnackBar(
+                        content: Text(
+                            AppLocalizations.of(context)!.titleContentEmpty)),
                   );
                 }
               },
-              child: Text('保存'),
+              child: Text(AppLocalizations.of(context)!.save),
             ),
             TextButton(
               onPressed: () => Navigator.of(context).pop(),
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
           ],
         );
@@ -266,7 +276,7 @@ class _NotebookPageState extends State<NotebookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('笔记本')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.notebookTitle)),
       body: ListView.builder(
         itemCount: notes.length,
         itemBuilder: (context, index) {

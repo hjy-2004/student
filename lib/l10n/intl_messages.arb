@@ -1,0 +1,19 @@
+{
+  "@@locale": "zh",
+  "@@last_modified": "2024-10-10T11:51:15.434708",
+  "appTitle": "Student Grade Management System",
+  "@appTitle": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "switchLanguage": "Switch Language",
+  "@switchLanguage": {
+    "type": "text",
+    "placeholders": {}
+  },
+  "accountManagement": "Account Management",
+  "@accountManagement": {
+    "type": "text",
+    "placeholders": {}
+  }
+}

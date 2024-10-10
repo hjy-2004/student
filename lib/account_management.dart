@@ -4,25 +4,29 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: unused_import
 import 'api_constants.dart';
+import 'l10n/app_localizations.dart';
 import 'login_page.dart';
 
 class AccountManagementPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
     return Scaffold(
-      appBar: AppBar(title: Text('账号管理')),
+      appBar: AppBar(
+          title:
+              Text(localizations?.accountManagement ?? 'Account Management')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
             ListTile(
-              title: Text('修改密码'),
+              title: Text(localizations?.changePassword ?? 'Change Password'),
               onTap: () {
                 _showChangePasswordDialog(context);
               },
             ),
             ListTile(
-              title: Text('退出登录'),
+              title: Text(localizations?.logout ?? 'Logout'),
               onTap: () {
                 _showLogoutConfirmation(context);
               },
@@ -39,29 +43,34 @@ class AccountManagementPage extends StatelessWidget {
     final TextEditingController confirmPasswordController =
         TextEditingController();
 
+    final localizations = AppLocalizations.of(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('修改密码'),
+          title: Text(localizations?.changePassword ?? '修改密码'),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               TextField(
                 controller: oldPasswordController,
-                decoration: InputDecoration(hintText: "输入旧密码"),
+                decoration: InputDecoration(
+                    hintText: localizations?.enterOldPassword ?? "输入旧密码"),
                 obscureText: true,
               ),
               SizedBox(height: 10),
               TextField(
                 controller: newPasswordController,
-                decoration: InputDecoration(hintText: "输入新密码"),
+                decoration: InputDecoration(
+                    hintText: localizations?.enterNewPassword ?? "输入新密码"),
                 obscureText: true,
               ),
               SizedBox(height: 10),
               TextField(
                 controller: confirmPasswordController,
-                decoration: InputDecoration(hintText: "确认新密码"),
+                decoration: InputDecoration(
+                    hintText: localizations?.confirmNewPassword ?? "确认新密码"),
                 obscureText: true,
               ),
             ],
@@ -75,7 +84,9 @@ class AccountManagementPage extends StatelessWidget {
 
                 if (newPassword != confirmPassword) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('新密码和确认密码不匹配')),
+                    SnackBar(
+                        content: Text(
+                            localizations?.passwordMismatch ?? '新密码和确认密码不匹配')),
                   );
                   return;
                 }
@@ -84,50 +95,49 @@ class AccountManagementPage extends StatelessWidget {
                     newPassword.isEmpty ||
                     confirmPassword.isEmpty) {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('密码不能为空')),
+                    SnackBar(
+                        content:
+                            Text(localizations?.passwordEmpty ?? '密码不能为空')),
                   );
                   return;
                 }
 
-                // 调用后台接口更新密码
+                // Call API to update password
                 bool success = await _updatePassword(oldPassword, newPassword);
                 if (success) {
-                  // 清除本地登录信息
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   await prefs.remove('username');
                   await prefs.remove('password');
 
-                  // 显示成功提示
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('密码修改成功，请重新登录')),
+                    SnackBar(
+                        content: Text(localizations?.passwordChangeSuccess ??
+                            '密码修改成功，请重新登录')),
                   );
 
-                  // 延迟一会儿再跳转到登录页面，以确保用户能看到 SnackBar 消息
                   await Future.delayed(Duration(seconds: 2));
 
-                  // 关闭弹窗
-                  Navigator.of(context).pop(); // 先关闭弹窗
-
-                  // 跳转到登录页面并清空导航堆栈
+                  Navigator.of(context).pop(); // Close dialog
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(builder: (context) => LoginPage()),
-                    (route) => false, // 清空导航堆栈
+                    (route) => false, // Clear navigation stack
                   );
                 } else {
-                  // 显示失败提示
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('修改密码失败，请重试')),
+                    SnackBar(
+                        content: Text(localizations?.passwordChangeFailure ??
+                            '修改密码失败，请重试')),
                   );
                 }
               },
-              child: Text('确认'),
+              child: Text(localizations?.confirm ?? '确认'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('取消'),
+              child: Text(localizations?.cancel ?? '取消'),
             ),
           ],
         );
@@ -174,12 +184,14 @@ class AccountManagementPage extends StatelessWidget {
   }
 
   void _showLogoutConfirmation(BuildContext context) {
+    final localizations = AppLocalizations.of(context);
+
     showDialog(
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('确认退出'),
-          content: Text('您确定要退出登录吗？'),
+          title: Text(localizations?.confirmLogout ?? '确认退出'),
+          content: Text(localizations?.logoutConfirmation ?? '您确定要退出登录吗？'),
           actions: [
             TextButton(
               onPressed: () async {
@@ -190,13 +202,13 @@ class AccountManagementPage extends StatelessWidget {
                   (route) => false, // 清空导航堆栈
                 );
               },
-              child: Text('确认'),
+              child: Text(localizations?.confirm ?? '确认'),
             ),
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('取消'),
+              child: Text(localizations?.cancel ?? '取消'),
             ),
           ],
         );

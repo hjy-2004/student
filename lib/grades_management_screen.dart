@@ -8,6 +8,8 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
+import 'l10n/app_localizations.dart';
+
 class GradesManagementScreen extends StatefulWidget {
   @override
   _GradesManagementScreenState createState() => _GradesManagementScreenState();
@@ -63,7 +65,8 @@ class _GradesManagementScreenState extends State<GradesManagementScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('成绩管理')),
+      appBar:
+          AppBar(title: Text(AppLocalizations.of(context)!.gradesManagement)),
       body: RefreshIndicator(
         onRefresh: _refreshData,
         child: SingleChildScrollView(
@@ -75,7 +78,7 @@ class _GradesManagementScreenState extends State<GradesManagementScreen> {
                 TextField(
                   controller: _searchController,
                   decoration: InputDecoration(
-                    hintText: '请输入学号查找成绩',
+                    hintText: AppLocalizations.of(context)!.searchStudentId,
                     prefixIcon: Icon(Icons.search),
                     suffixIcon: IconButton(
                       icon: Icon(Icons.clear),
@@ -103,19 +106,23 @@ class _GradesManagementScreenState extends State<GradesManagementScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('学生姓名: ${_searchedStudent!['name']}',
+                              Text(
+                                  '${AppLocalizations.of(context)!.studentName}: ${_searchedStudent!['name']}',
                                   style: TextStyle(fontSize: 18)),
                               SizedBox(height: 8),
-                              Text('班级: ${_searchedStudent!['stuClass']}',
+                              Text(
+                                  '${AppLocalizations.of(context)!.className}: ${_searchedStudent!['stuClass']}',
                                   style: TextStyle(fontSize: 16)),
                               SizedBox(height: 8),
-                              Text('总学分: ${_searchedStudent!['totalCredits']}',
+                              Text(
+                                  '${AppLocalizations.of(context)!.totalCredits}: ${_searchedStudent!['totalCredits']}',
                                   style: TextStyle(fontSize: 16)),
                             ],
                           ),
                         ),
                       )
-                    : Text('请输入学号进行查询'),
+                    : Text(
+                        AppLocalizations.of(context)!.enterStudentIdToSearch),
                 SizedBox(height: 20),
                 _isLoading
                     ? Center(child: CircularProgressIndicator())
