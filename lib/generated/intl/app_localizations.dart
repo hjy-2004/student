@@ -334,6 +334,22 @@ class AppLocalizations {
     );
   }
 
+  String get pin {
+    return Intl.message(
+      '置顶',
+      name: 'pin',
+      desc: 'Label for pinning a note',
+    );
+  }
+
+  String get delete {
+    return Intl.message(
+      '删除',
+      name: 'delete',
+      desc: 'Label for deleting a note',
+    );
+  }
+
   String get noteSaved {
     return Intl.message(
       'Note saved successfully',
@@ -371,6 +387,126 @@ class AppLocalizations {
       'Save',
       name: 'save',
       desc: 'Save action button text',
+    );
+  }
+
+  String get profileTitle {
+    return Intl.message(
+      'Profile',
+      name: 'profileTitle',
+      desc: 'Title - Profile page',
+    );
+  }
+
+  String get studentId {
+    return Intl.message(
+      'Student ID: ',
+      name: 'studentId',
+      desc: 'Label for student ID',
+    );
+  }
+
+  String get studentClass {
+    return Intl.message(
+      'Class: ',
+      name: 'studentClass',
+      desc: 'Label for student class',
+    );
+  }
+
+  String get studentEmail {
+    return Intl.message(
+      'Email: ',
+      name: 'studentEmail',
+      desc: 'Label for student email',
+    );
+  }
+
+  String get updateAvatar {
+    return Intl.message(
+      'Update Avatar',
+      name: 'updateAvatar',
+      desc: 'Button - Update avatar',
+    );
+  }
+
+  String get loading {
+    return Intl.message(
+      'Loading...',
+      name: 'loading',
+      desc: 'Loading status message',
+    );
+  }
+
+  String get failedToFetch {
+    return Intl.message(
+      'Failed to fetch',
+      name: 'failedToFetch',
+      desc: 'Error message when data fetch fails',
+    );
+  }
+
+  String get notLoggedIn {
+    return Intl.message(
+      'Not logged in',
+      name: 'notLoggedIn',
+      desc: 'Status message for not logged in',
+    );
+  }
+
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: 'Title for the login page',
+    );
+  }
+
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: 'Label for the username input field',
+    );
+  }
+
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: 'Label for the password input field',
+    );
+  }
+
+  String get loginSuccess {
+    return Intl.message(
+      'Login successful!',
+      name: 'loginSuccess',
+      desc: 'Message displayed when login is successful',
+    );
+  }
+
+  String get loginFailed {
+    return Intl.message(
+      'Login failed: {message}',
+      name: 'loginFailed',
+      desc: 'Message displayed when login fails',
+    );
+  }
+
+  String get noAccountRegister {
+    return Intl.message(
+      'No account? Click to register',
+      name: 'noAccountRegister',
+      desc: 'Prompt for user to register if they don\'t have an account',
+    );
+  }
+
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot your password?',
+      name: 'forgotPassword',
+      desc: 'Prompt for user to reset their password',
     );
   }
 }

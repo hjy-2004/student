@@ -2,12 +2,11 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-// ignore: unused_import
 import 'api_constants.dart';
 import 'forgotPassword_page.dart';
+import 'generated/intl/app_localizations.dart';
 import 'home_page.dart';
-// ignore: unused_import
-import 'register_page.dart'; // 假设注册页面的文件名为 register_page.dart
+import 'register_page.dart';
 
 // 检查本地是否保存了用户名和密码
 Future<bool> _checkLoginStatus() async {
@@ -46,6 +45,19 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> login() async {
+    // 1. 检查输入是否为空
+    if (_usernameController.text.isEmpty || _passwordController.text.isEmpty) {
+      setState(() {
+        String lang = Localizations.localeOf(context).languageCode;
+        if (lang == 'zh') {
+          _message = '用户名或密码不能为空'; // 中文错误信息
+        } else {
+          _message = 'Username and password cannot be empty'; // 英文错误信息
+        }
+      });
+      return; // 输入无效，直接返回，不进行登录请求
+    }
+
     try {
       Dio dio = Dio();
       final response = await dio.post(
@@ -57,34 +69,50 @@ class _LoginPageState extends State<LoginPage> {
         },
       );
 
+      // 2. 检查服务器返回结果
       if (response.statusCode == 200) {
         final jsonResponse = response.data;
 
         if (jsonResponse['success']) {
           String username = jsonResponse['data']['username'];
-          String password = _passwordController.text; // 获取密码
+          String password = _passwordController.text;
 
-          await _saveCredentials(username, password); // 保存用户名和密码
+          await _saveCredentials(username, password);
 
           setState(() {
-            _message = '登录成功！';
+            // 登录成功信息
+            String lang = Localizations.localeOf(context).languageCode;
+            if (lang == 'zh') {
+              _message = jsonResponse['message']; // 服务器返回的中文消息
+            } else {
+              _message = 'Login successful!'; // 英文消息
+            }
           });
 
+          // 跳转到主页
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
         } else {
+          // 处理登录失败
           setState(() {
-            _message = '登录失败：${jsonResponse['message']}';
+            String lang = Localizations.localeOf(context).languageCode;
+            if (lang == 'zh') {
+              _message = jsonResponse['message']; // 服务器返回的中文失败消息
+            } else {
+              _message = 'Login failed: ${jsonResponse['message']}'; // 英文失败消息
+            }
           });
         }
       } else {
+        // 登录失败的本地化信息
         setState(() {
-          _message = '登录失败：${response.data}';
+          _message = AppLocalizations.of(context)!.loginFailed; // 使用本地化的失败消息
         });
       }
     } catch (e) {
+      // 捕获异常并显示本地化的错误信息
       setState(() {
-        _message = '登录失败：$e';
+        _message = AppLocalizations.of(context)!.loginFailed; // 使用本地化的失败消息
       });
     }
   }
@@ -92,29 +120,43 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('登录')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.login)),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(labelText: '用户名')),
+              controller: _usernameController,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.username,
+              ),
+            ),
             TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(labelText: '密码'),
-                obscureText: true),
+              controller: _passwordController,
+              decoration: InputDecoration(
+                labelText: AppLocalizations.of(context)!.password,
+              ),
+              obscureText: true,
+            ),
             SizedBox(height: 20),
-            ElevatedButton(onPressed: login, child: Text('登录')),
+            ElevatedButton(
+              onPressed: login,
+              child: Text(AppLocalizations.of(context)!.login),
+            ),
             SizedBox(height: 20),
             Container(
               padding: EdgeInsets.all(8.0),
               color: Colors.grey[200],
-              child: Text(_message,
-                  style: TextStyle(
-                      color:
-                          _message.contains('成功') ? Colors.green : Colors.red,
-                      fontSize: 16)),
+              child: Text(
+                _message,
+                style: TextStyle(
+                  color: _message
+                          .contains(AppLocalizations.of(context)!.loginSuccess)
+                      ? Colors.green
+                      : Colors.red,
+                  fontSize: 16,
+                ),
+              ),
             ),
             SizedBox(height: 20),
             GestureDetector(
@@ -122,11 +164,10 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) =>
-                            StudentRegistrationPage())); // 跳转到注册页面
+                        builder: (context) => StudentRegistrationPage()));
               },
               child: Text(
-                '没有账号吗？点击注册',
+                AppLocalizations.of(context)!.noAccountRegister,
                 style: TextStyle(
                   color: Colors.blue,
                   decoration: TextDecoration.underline,
@@ -136,14 +177,13 @@ class _LoginPageState extends State<LoginPage> {
             SizedBox(height: 10),
             GestureDetector(
               onTap: () {
-                // TODO: 跳转到忘记密码页面
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => ForgotPasswordPage()));
               },
               child: Text(
-                '忘记密码了吗？',
+                AppLocalizations.of(context)!.forgotPassword,
                 style: TextStyle(
                   color: Colors.blue,
                   decoration: TextDecoration.underline,

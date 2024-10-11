@@ -23,7 +23,7 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
         "accountManagement": MessageLookupByLibrary.simpleMessage("账号管理"),
-        "add_note": MessageLookupByLibrary.simpleMessage("新增笔记"),
+        "addNote": MessageLookupByLibrary.simpleMessage("新增笔记"),
         "appTitle": MessageLookupByLibrary.simpleMessage("学生成绩管理系统"),
         "cancel": MessageLookupByLibrary.simpleMessage("取消"),
         "changePassword": MessageLookupByLibrary.simpleMessage("修改密码"),
@@ -34,7 +34,7 @@ class MessageLookup extends MessageLookupByLibrary {
         "confirmNewPassword": MessageLookupByLibrary.simpleMessage("确认新密码"),
         "delete": MessageLookupByLibrary.simpleMessage("删除"),
         "edit": MessageLookupByLibrary.simpleMessage("修改"),
-        "edit_note": MessageLookupByLibrary.simpleMessage("修改笔记"),
+        "editNote": MessageLookupByLibrary.simpleMessage("修改笔记"),
         "enterNewPassword": MessageLookupByLibrary.simpleMessage("输入新密码"),
         "enterOldPassword": MessageLookupByLibrary.simpleMessage("输入旧密码"),
         "enterStudentIdToSearch":
@@ -46,15 +46,15 @@ class MessageLookup extends MessageLookupByLibrary {
             MessageLookupByLibrary.simpleMessage("历史上的今天发生了:"),
         "historicalToday": MessageLookupByLibrary.simpleMessage("历史上的今天"),
         "home": MessageLookupByLibrary.simpleMessage("首页"),
-        "input_note_content": MessageLookupByLibrary.simpleMessage("输入笔记内容"),
-        "input_note_title": MessageLookupByLibrary.simpleMessage("输入笔记标题"),
+        "inputNoteContent": MessageLookupByLibrary.simpleMessage("输入笔记内容"),
+        "inputNoteTitle": MessageLookupByLibrary.simpleMessage("输入笔记标题"),
         "logout": MessageLookupByLibrary.simpleMessage("退出登录"),
         "logoutConfirmation":
             MessageLookupByLibrary.simpleMessage("您确定要退出登录吗？"),
         "noData": MessageLookupByLibrary.simpleMessage("没有可用数据"),
-        "note_deleted": MessageLookupByLibrary.simpleMessage("笔记已删除"),
-        "note_pinned": MessageLookupByLibrary.simpleMessage("笔记已置顶"),
-        "note_saved": MessageLookupByLibrary.simpleMessage("笔记保存成功"),
+        "noteDeleted": MessageLookupByLibrary.simpleMessage("笔记已删除"),
+        "notePinned": MessageLookupByLibrary.simpleMessage("笔记已置顶"),
+        "noteSaved": MessageLookupByLibrary.simpleMessage("笔记保存成功"),
         "notebook": MessageLookupByLibrary.simpleMessage("笔记本"),
         "notebookTitle": MessageLookupByLibrary.simpleMessage("笔记本"),
         "notebook_title": MessageLookupByLibrary.simpleMessage("笔记本"),
@@ -75,6 +75,21 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_content_empty":
             MessageLookupByLibrary.simpleMessage("标题和内容不能为空"),
         "todayIs": MessageLookupByLibrary.simpleMessage("今天是"),
-        "totalCredits": MessageLookupByLibrary.simpleMessage("总学分")
+        "totalCredits": MessageLookupByLibrary.simpleMessage("总学分"),
+        "profileTitle": MessageLookupByLibrary.simpleMessage("个人资料"),
+        "studentId": MessageLookupByLibrary.simpleMessage("学号: "),
+        "studentClass": MessageLookupByLibrary.simpleMessage("班级: "),
+        "studentEmail": MessageLookupByLibrary.simpleMessage("邮箱: "),
+        "updateAvatar": MessageLookupByLibrary.simpleMessage("修改头像"),
+        "loading": MessageLookupByLibrary.simpleMessage("加载中..."),
+        "failedToFetch": MessageLookupByLibrary.simpleMessage("获取失败"),
+        "notLoggedIn": MessageLookupByLibrary.simpleMessage("未登录"),
+        "login": MessageLookupByLibrary.simpleMessage("登录"),
+        "username": MessageLookupByLibrary.simpleMessage("用户名"),
+        "password": MessageLookupByLibrary.simpleMessage("密码"),
+        "loginSuccess": MessageLookupByLibrary.simpleMessage("登录成功！"),
+        "loginFailed": MessageLookupByLibrary.simpleMessage("登录失败"),
+        "noAccountRegister": MessageLookupByLibrary.simpleMessage("没有账号吗？点击注册"),
+        "forgotPassword": MessageLookupByLibrary.simpleMessage("忘记密码了吗？"),
       };
 }

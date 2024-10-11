@@ -6,6 +6,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_constants.dart';
+import 'generated/l10n.dart'; // 引入本地化支持
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -13,10 +14,10 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  String studentName = '加载中...';
-  String studentId = '加载中...';
-  String studentClass = '加载中...';
-  String studentEmail = '加载中...';
+  String studentName = '';
+  String studentId = '';
+  String studentClass = '';
+  String studentEmail = '';
   String? avatarPath; // 头像路径
 
   @override
@@ -29,30 +30,24 @@ class _ProfilePageState extends State<ProfilePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? savedStudentId = prefs.getString('studentId'); // 获取学号
 
-    // 清理之前的头像数据
     if (studentId != savedStudentId) {
-      // 如果学生ID不一样，清除之前的头像
       await prefs.remove('avatarPath_$studentId');
-      avatarPath = null; // 重新设置头像为null
+      avatarPath = null;
     }
 
-    String? savedAvatarPath =
-        prefs.getString('avatarPath_$savedStudentId'); // 根据学号加载头像路径
-
-    // 从本地存储加载其他学生信息
+    String? savedAvatarPath = prefs.getString('avatarPath_$savedStudentId');
     String? savedStudentName = prefs.getString('studentName');
     String? savedStudentClass = prefs.getString('studentClass');
     String? savedStudentEmail = prefs.getString('studentEmail');
 
     setState(() {
-      avatarPath = savedAvatarPath; // 设置头像路径
-      studentName = savedStudentName ?? '加载中...';
-      studentId = savedStudentId ?? '加载中...';
-      studentClass = savedStudentClass ?? '加载中...';
-      studentEmail = savedStudentEmail ?? '加载中...';
+      avatarPath = savedAvatarPath;
+      studentName = savedStudentName ?? S.of(context).loading;
+      studentId = savedStudentId ?? S.of(context).loading;
+      studentClass = savedStudentClass ?? S.of(context).loading;
+      studentEmail = savedStudentEmail ?? S.of(context).loading;
     });
 
-    // 如果没有加载到学生信息，则请求
     if (savedStudentName == null ||
         savedStudentId == null ||
         savedStudentClass == null ||
@@ -67,10 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (username == null) {
       setState(() {
-        studentName = '未登录';
-        studentId = '未登录';
-        studentClass = '未登录';
-        studentEmail = '未登录';
+        studentName = S.of(context).notLoggedIn;
+        studentId = S.of(context).notLoggedIn;
+        studentClass = S.of(context).notLoggedIn;
+        studentEmail = S.of(context).notLoggedIn;
       });
       return;
     }
@@ -83,39 +78,40 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (response.statusCode == 200 && response.data.isNotEmpty) {
-        String newStudentId = response.data[0]['username'] ?? '未知学号';
+        String newStudentId =
+            response.data[0]['username'] ?? S.of(context).failedToFetch;
 
-        // 获取对应学号的头像路径
         String? savedAvatarPath = prefs.getString('avatarPath_$newStudentId');
 
         setState(() {
-          studentName = response.data[0]['stuName'] ?? '未知姓名';
+          studentName =
+              response.data[0]['stuName'] ?? S.of(context).failedToFetch;
           studentId = newStudentId;
-          studentClass = response.data[0]['stuClass'] ?? '未知班级';
-          studentEmail = response.data[0]['email'] ?? '未提供邮箱';
-          avatarPath = savedAvatarPath ?? avatarPath; // 保持之前加载的头像路径
+          studentClass =
+              response.data[0]['stuClass'] ?? S.of(context).failedToFetch;
+          studentEmail =
+              response.data[0]['email'] ?? S.of(context).failedToFetch;
+          avatarPath = savedAvatarPath ?? avatarPath;
         });
 
-        // 将学生信息保存到本地
         await prefs.setString('studentName', studentName);
         await prefs.setString('studentId', studentId);
         await prefs.setString('studentClass', studentClass);
         await prefs.setString('studentEmail', studentEmail);
       } else {
         setState(() {
-          studentName = '获取失败';
-          studentId = '获取失败';
-          studentClass = '获取失败';
-          studentEmail = '获取失败';
+          studentName = S.of(context).failedToFetch;
+          studentId = S.of(context).failedToFetch;
+          studentClass = S.of(context).failedToFetch;
+          studentEmail = S.of(context).failedToFetch;
         });
       }
     } catch (e) {
-      print('Error: $e');
       setState(() {
-        studentName = '获取失败';
-        studentId = '获取失败';
-        studentClass = '获取失败';
-        studentEmail = '获取失败';
+        studentName = S.of(context).failedToFetch;
+        studentId = S.of(context).failedToFetch;
+        studentClass = S.of(context).failedToFetch;
+        studentEmail = S.of(context).failedToFetch;
       });
     }
   }
@@ -130,13 +126,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (image != null) {
       setState(() {
-        avatarPath = image.path; // 更新头像路径
+        avatarPath = image.path;
       });
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      await prefs.setString(
-          'avatarPath_$studentId', avatarPath!); // 保存头像路径到本地，键为学号
+      await prefs.setString('avatarPath_$studentId', avatarPath!);
 
-      // 返回修改后的头像路径
       Navigator.pop(context, avatarPath);
     }
   }
@@ -144,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('个人资料')),
+      appBar: AppBar(title: Text(S.of(context).profileTitle)),
       body: RefreshIndicator(
         onRefresh: _refreshStudentInfo,
         child: ListView(
@@ -157,14 +151,18 @@ class _ProfilePageState extends State<ProfilePage> {
               child: avatarPath == null ? Icon(Icons.person, size: 60) : null,
             ),
             SizedBox(height: 10),
-            Text('姓名: $studentName', style: TextStyle(fontSize: 20)),
-            Text('学号: $studentId', style: TextStyle(fontSize: 20)),
-            Text('班级: $studentClass', style: TextStyle(fontSize: 20)),
-            Text('邮箱: $studentEmail', style: TextStyle(fontSize: 20)),
+            Text('${S.of(context).studentName} $studentName',
+                style: TextStyle(fontSize: 20)),
+            Text('${S.of(context).studentId} $studentId',
+                style: TextStyle(fontSize: 20)),
+            Text('${S.of(context).studentClass} $studentClass',
+                style: TextStyle(fontSize: 20)),
+            Text('${S.of(context).studentEmail} $studentEmail',
+                style: TextStyle(fontSize: 20)),
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: _pickAvatar,
-              child: Text('修改头像'),
+              child: Text(S.of(context).updateAvatar),
             ),
           ],
         ),

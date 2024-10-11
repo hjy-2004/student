@@ -4,7 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: unused_import
 import 'api_constants.dart';
-import 'l10n/app_localizations.dart';
+import 'generated/intl/app_localizations.dart';
 import 'login_page.dart';
 
 class AccountManagementPage extends StatelessWidget {

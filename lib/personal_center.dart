@@ -6,7 +6,7 @@ import 'package:flutter_2024_09_22/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account_management.dart';
-import 'l10n/app_localizations.dart';
+import 'generated/intl/app_localizations.dart';
 import 'notebook_page.dart';
 import 'profile_page.dart';
 

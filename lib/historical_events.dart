@@ -4,7 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'l10n/app_localizations.dart';
+import 'generated/intl/app_localizations.dart';
 import 'main.dart';
 
 class HistoricalEventsScreen extends StatefulWidget {
@@ -21,7 +21,7 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
     super.initState();
     _getCurrentDate();
     _loadHistoricalEvents();
-    _fetchHistoricalEvents();
+    // _fetchHistoricalEvents();
   }
 
   void _getCurrentDate() {

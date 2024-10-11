@@ -1,6 +1,7 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
 import 'intl/messages_all.dart';
 
 // **************************************************************************
@@ -526,6 +527,156 @@ class S {
       'Pin',
       name: 'pin',
       desc: '',
+      args: [],
+    );
+  }
+
+  /// `Profile`
+  String get profileTitle {
+    return Intl.message(
+      'Profile',
+      name: 'profileTitle',
+      desc: 'Title - Profile page',
+      args: [],
+    );
+  }
+
+  /// `Student ID: `
+  String get studentId {
+    return Intl.message(
+      'Student ID: ',
+      name: 'studentId',
+      desc: 'Label for student ID',
+      args: [],
+    );
+  }
+
+  /// `Class: `
+  String get studentClass {
+    return Intl.message(
+      'Class: ',
+      name: 'studentClass',
+      desc: 'Label for student class',
+      args: [],
+    );
+  }
+
+  /// `Email: `
+  String get studentEmail {
+    return Intl.message(
+      'Email: ',
+      name: 'studentEmail',
+      desc: 'Label for student email',
+      args: [],
+    );
+  }
+
+  /// `Update Avatar`
+  String get updateAvatar {
+    return Intl.message(
+      'Update Avatar',
+      name: 'updateAvatar',
+      desc: 'Button - Update avatar',
+      args: [],
+    );
+  }
+
+  /// `Loading...`
+  String get loading {
+    return Intl.message(
+      'Loading...',
+      name: 'loading',
+      desc: 'Loading status message',
+      args: [],
+    );
+  }
+
+  /// `Failed to fetch`
+  String get failedToFetch {
+    return Intl.message(
+      'Failed to fetch',
+      name: 'failedToFetch',
+      desc: 'Error message when data fetch fails',
+      args: [],
+    );
+  }
+
+  /// `Not logged in`
+  String get notLoggedIn {
+    return Intl.message(
+      'Not logged in',
+      name: 'notLoggedIn',
+      desc: 'Status message for not logged in',
+      args: [],
+    );
+  }
+
+  /// `Login`
+  String get login {
+    return Intl.message(
+      'Login',
+      name: 'login',
+      desc: 'Title for the login page',
+      args: [],
+    );
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message(
+      'Username',
+      name: 'username',
+      desc: 'Label for the username input field',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message(
+      'Password',
+      name: 'password',
+      desc: 'Label for the password input field',
+      args: [],
+    );
+  }
+
+  /// `Login successful!`
+  String get loginSuccess {
+    return Intl.message(
+      'Login successful!',
+      name: 'loginSuccess',
+      desc: 'Message displayed when login is successful',
+      args: [],
+    );
+  }
+
+  /// `Login failed: {message}`
+  String get loginFailed {
+    return Intl.message(
+      'Login failed: {message}',
+      name: 'loginFailed',
+      desc: 'Message displayed when login fails',
+      args: [],
+    );
+  }
+
+  /// `No account? Click to register`
+  String get noAccountRegister {
+    return Intl.message(
+      'No account? Click to register',
+      name: 'noAccountRegister',
+      desc: 'Prompt for user to register if they don\'t have an account',
+      args: [],
+    );
+  }
+
+  /// `Forgot your password?`
+  String get forgotPassword {
+    return Intl.message(
+      'Forgot your password?',
+      name: 'forgotPassword',
+      desc: 'Prompt for user to reset their password',
       args: [],
     );
   }

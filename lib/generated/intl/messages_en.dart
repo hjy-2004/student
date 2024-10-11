@@ -92,6 +92,25 @@ class MessageLookup extends MessageLookupByLibrary {
         "title_content_empty": MessageLookupByLibrary.simpleMessage(
             "Title and content cannot be empty"),
         "todayIs": MessageLookupByLibrary.simpleMessage("Today is"),
-        "totalCredits": MessageLookupByLibrary.simpleMessage("Total Credits")
+        "totalCredits": MessageLookupByLibrary.simpleMessage("Total Credits"),
+        "profileTitle": MessageLookupByLibrary.simpleMessage("Profile"),
+        "studentId": MessageLookupByLibrary.simpleMessage("Student ID: "),
+        "studentClass": MessageLookupByLibrary.simpleMessage("Class: "),
+        "studentEmail": MessageLookupByLibrary.simpleMessage("Email: "),
+        "updateAvatar": MessageLookupByLibrary.simpleMessage("Update Avatar"),
+        "loading": MessageLookupByLibrary.simpleMessage("Loading..."),
+        "failedToFetch":
+            MessageLookupByLibrary.simpleMessage("Failed to fetch"),
+        "notLoggedIn": MessageLookupByLibrary.simpleMessage("Not logged in"),
+        "login": MessageLookupByLibrary.simpleMessage("Login"),
+        "username": MessageLookupByLibrary.simpleMessage("Username"),
+        "password": MessageLookupByLibrary.simpleMessage("Password"),
+        "loginSuccess":
+            MessageLookupByLibrary.simpleMessage("Login successful!"),
+        "loginFailed": MessageLookupByLibrary.simpleMessage("Login failed"),
+        "noAccountRegister": MessageLookupByLibrary.simpleMessage(
+            "No account? Click to register"),
+        "forgotPassword":
+            MessageLookupByLibrary.simpleMessage("Forgot your password?"),
       };
 }

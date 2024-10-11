@@ -8,7 +8,7 @@ import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-import 'l10n/app_localizations.dart';
+import 'generated/intl/app_localizations.dart';
 
 class GradesManagementScreen extends StatefulWidget {
   @override

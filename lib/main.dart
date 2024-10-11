@@ -5,8 +5,9 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'generated/intl/app_localizations.dart';
+import 'generated/l10n.dart';
 import 'home_page.dart';
-import 'l10n/app_localizations.dart';
 import 'login_page.dart';
 
 void main() {
@@ -31,11 +32,9 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate, // 添加你的本地化委托
+            S.delegate, // 使用 S.delegate 替代 AppLocalizations.delegate
           ],
-          supportedLocales: [
-            const Locale('en', ''), // 英语
-            const Locale('zh', ''), // 中文
-          ],
+          supportedLocales: S.delegate.supportedLocales, // 确保支持的语言列表与 S 一致
         );
       },
     );

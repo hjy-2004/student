@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import 'l10n/app_localizations.dart'; // 更新为你的路径
+import 'generated/intl/app_localizations.dart'; // 更新为你的路径
 
 class NotebookPage extends StatefulWidget {
   @override
@@ -200,14 +200,14 @@ class _NotebookPageState extends State<NotebookPage> {
               },
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.noteDeleted),
+              title: Text(AppLocalizations.of(context)!.delete),
               onTap: () {
                 Navigator.of(context).pop();
                 _deleteNote(index);
               },
             ),
             ListTile(
-              title: Text(AppLocalizations.of(context)!.notePinned),
+              title: Text(AppLocalizations.of(context)!.pin),
               onTap: () {
                 Navigator.of(context).pop();
                 _togglePinNote(index);

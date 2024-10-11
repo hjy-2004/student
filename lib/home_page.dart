@@ -6,9 +6,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
+import 'generated/intl/app_localizations.dart';
 import 'grades_management_screen.dart';
 import 'historical_events.dart';
-import 'l10n/app_localizations.dart';
 import 'main.dart';
 import 'personal_center.dart';
 
