@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_2024_09_22/generated/intl/app_localizations.dart';
 
 import 'api_constants.dart';
 import 'login_page.dart';
@@ -34,16 +35,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           _showBindEmailDialog();
         }
       } else {
-        _showErrorDialog('无法检查用户邮箱，请重试');
+        _showErrorDialog(AppLocalizations.of(context)!.checkUserEmailError);
       }
     } catch (e) {
-      _showErrorDialog('检查用户邮箱失败: $e');
+      _showErrorDialog(
+        AppLocalizations.of(context)!.checkUserEmailFailure(e.toString()),
+      );
     }
   }
 
   Future<void> _bindNewEmail() async {
     if (_emailController.text.isEmpty) {
-      _showErrorDialog('邮箱不能为空');
+      _showErrorDialog(AppLocalizations.of(context)!.emailCannotBeEmpty);
       return;
     }
 
@@ -59,18 +62,18 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       // 检查状态码
       if (response.statusCode == 200) {
         String message = response.data;
-        if (message.contains('邮箱绑定成功')) {
+        if (message.contains(AppLocalizations.of(context)!.bindEmailSuccess)) {
           _showSuccessDialog(message);
         } else {
-          _showErrorDialog('邮箱绑定失败，请重试');
+          _showErrorDialog(AppLocalizations.of(context)!.bindEmailFailure);
         }
       } else {
-        _showErrorDialog('邮箱绑定失败，请重试');
+        _showErrorDialog(AppLocalizations.of(context)!.bindEmailFailure);
       }
     } catch (e) {
       if (e is DioError) {
         if (e.response?.statusCode == 404 &&
-            e.response?.data == '用户不存在，请先去注册账号') {
+            e.response?.data == AppLocalizations.of(context)!.userNotFound) {
           // 用户不存在，提示去注册账号
           _showErrorDialog(
             '用户不存在，请先注册账号',
@@ -99,9 +102,10 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
 
       if (response.statusCode == 200) {
-        _showSuccessDialog('验证码已发送，请检查邮箱');
+        _showSuccessDialog(AppLocalizations.of(context)!.verificationCodeSent);
       } else {
-        _showErrorDialog('发送验证码失败，请重试');
+        _showErrorDialog(
+            AppLocalizations.of(context)!.verificationCodeSendFailed);
       }
     } catch (e) {
       _showErrorDialog('发送验证码失败: $e');
@@ -111,7 +115,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   Future<void> _resetPassword(
       String email, String code, String newPassword) async {
     if (email.isEmpty || code.isEmpty || newPassword.isEmpty) {
-      _showErrorDialog('邮箱、验证码和新密码不能为空');
+      _showErrorDialog(AppLocalizations.of(context)!.fieldsCannotBeEmpty);
       return;
     }
 
@@ -129,9 +133,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       );
 
       if (response.statusCode == 200 && response.data['success']) {
-        _showSuccessDialog('密码重置成功，请使用新密码登录');
+        _showSuccessDialog(AppLocalizations.of(context)!.resetPasswordSuccess);
       } else {
-        _showErrorDialog('密码重置失败，请重试');
+        _showErrorDialog(AppLocalizations.of(context)!.resetPasswordFailure);
       }
     } catch (e) {
       _showErrorDialog('重置密码失败: $e');
@@ -140,18 +144,27 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
   void _showSendVerificationDialog(String email) {
     // 隐藏部分邮箱
-    String maskedEmail = email.replaceRange(3, email.indexOf('@'), '****');
+    String maskEmail(String email) {
+      if (email.isNotEmpty && email.contains('@')) {
+        int atIndex = email.indexOf('@');
+        if (atIndex > 3) {
+          return email.replaceRange(3, atIndex, '****');
+        }
+      }
+      return email; // 如果邮箱格式不符合，直接返回原邮箱
+    }
 
     showDialog(
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('验证邮箱'),
-          content: Text('将通过你的QQ邮箱 $maskedEmail 发送验证码'),
+          title: Text(AppLocalizations.of(context)!.verificationCodeHint),
+          content: Text(AppLocalizations.of(context)!
+              .sendingVerificationCodeToEmail(maskEmail(email))),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -159,7 +172,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 _sendVerificationCode(email);
                 _showEnterVerificationCodeDialog(email);
               },
-              child: Text('确定'),
+              child: Text(AppLocalizations.of(context)!.confirm),
             ),
           ],
         );
@@ -172,16 +185,17 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('输入验证码'),
+          title: Text(AppLocalizations.of(context)!.verificationCodeHint),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('请输入发送到你的QQ邮箱 $email 的验证码'),
+              Text(AppLocalizations.of(context)!
+                  .enterVerificationCodeSentToEmail(email)),
               SizedBox(height: 10),
               TextField(
                 controller: _verificationCodeController,
                 decoration: InputDecoration(
-                  labelText: '验证码',
+                  labelText: AppLocalizations.of(context)!.verificationCode,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -190,7 +204,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 controller: _newPasswordController,
                 obscureText: true,
                 decoration: InputDecoration(
-                  labelText: '新密码',
+                  labelText: AppLocalizations.of(context)!.newPasswordLabel,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -199,7 +213,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
@@ -210,7 +224,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   _verificationCodeController.text,
                 );
               },
-              child: Text('验证并重置密码'),
+              child: Text(AppLocalizations.of(context)!.resetPasswordButton),
             ),
           ],
         );
@@ -223,15 +237,15 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('绑定邮箱'),
+          title: Text(AppLocalizations.of(context)!.bindEmailDialogTitle),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('请输入你的QQ邮箱以进行绑定'),
+              Text(AppLocalizations.of(context)!.enterQqEmailToBind),
               TextField(
                 controller: _emailController,
                 decoration: InputDecoration(
-                  labelText: 'QQ邮箱',
+                  labelText: AppLocalizations.of(context)!.qqEmail,
                   border: OutlineInputBorder(),
                 ),
               ),
@@ -240,14 +254,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
                 _bindNewEmail();
               },
-              child: Text('确定'),
+              child: Text(AppLocalizations.of(context)!.confirm),
             ),
           ],
         );
@@ -261,14 +275,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('提示'),
+          title: Text(AppLocalizations.of(context)!.errorDialogTitle),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
               },
-              child: Text('取消'),
+              child: Text(AppLocalizations.of(context)!.cancel),
             ),
             if (onConfirm != null)
               TextButton(
@@ -276,7 +290,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                   Navigator.pop(context);
                   onConfirm();
                 },
-                child: Text('确定'),
+                child: Text(AppLocalizations.of(context)!.confirm),
               ),
           ],
         );
@@ -289,18 +303,19 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text('成功'),
+          title: Text(AppLocalizations.of(context)!.successDialogTitle),
           content: Text(message),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.pop(context);
-                if (message.contains('密码重置成功')) {
+                if (message.contains(
+                    AppLocalizations.of(context)!.registrationSuccess)) {
                   Navigator.pushReplacement(context,
                       MaterialPageRoute(builder: (context) => LoginPage()));
                 }
               },
-              child: Text('确定'),
+              child: Text(AppLocalizations.of(context)!.confirm),
             ),
           ],
         );
@@ -311,19 +326,20 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('忘记密码')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.forgotPassword)),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
           children: [
             TextField(
               controller: _usernameController,
-              decoration: InputDecoration(labelText: '学号'),
+              decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.studentId),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: _checkUserEmail,
-              child: Text('下一步'),
+              child: Text(AppLocalizations.of(context)!.nextStep),
             ),
           ],
         ),

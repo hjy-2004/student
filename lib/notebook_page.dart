@@ -276,7 +276,7 @@ class _NotebookPageState extends State<NotebookPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.notebookTitle)),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.notebook)),
       body: ListView.builder(
         itemCount: notes.length,
         itemBuilder: (context, index) {

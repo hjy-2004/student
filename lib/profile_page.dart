@@ -2,11 +2,11 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_2024_09_22/generated/intl/app_localizations.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_constants.dart';
-import 'generated/l10n.dart'; // 引入本地化支持
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -42,10 +42,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     setState(() {
       avatarPath = savedAvatarPath;
-      studentName = savedStudentName ?? S.of(context).loading;
-      studentId = savedStudentId ?? S.of(context).loading;
-      studentClass = savedStudentClass ?? S.of(context).loading;
-      studentEmail = savedStudentEmail ?? S.of(context).loading;
+      studentName = savedStudentName ?? AppLocalizations.of(context)!.loading;
+      studentId = savedStudentId ?? AppLocalizations.of(context)!.loading;
+      studentClass = savedStudentClass ?? AppLocalizations.of(context)!.loading;
+      studentEmail = savedStudentEmail ?? AppLocalizations.of(context)!.loading;
     });
 
     if (savedStudentName == null ||
@@ -62,10 +62,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
     if (username == null) {
       setState(() {
-        studentName = S.of(context).notLoggedIn;
-        studentId = S.of(context).notLoggedIn;
-        studentClass = S.of(context).notLoggedIn;
-        studentEmail = S.of(context).notLoggedIn;
+        studentName = AppLocalizations.of(context)!.notLoggedIn;
+        studentId = AppLocalizations.of(context)!.notLoggedIn;
+        studentClass = AppLocalizations.of(context)!.notLoggedIn;
+        studentEmail = AppLocalizations.of(context)!.notLoggedIn;
       });
       return;
     }
@@ -78,19 +78,19 @@ class _ProfilePageState extends State<ProfilePage> {
       );
 
       if (response.statusCode == 200 && response.data.isNotEmpty) {
-        String newStudentId =
-            response.data[0]['username'] ?? S.of(context).failedToFetch;
+        String newStudentId = response.data[0]['username'] ??
+            AppLocalizations.of(context)!.failedToFetch;
 
         String? savedAvatarPath = prefs.getString('avatarPath_$newStudentId');
 
         setState(() {
-          studentName =
-              response.data[0]['stuName'] ?? S.of(context).failedToFetch;
+          studentName = response.data[0]['stuName'] ??
+              AppLocalizations.of(context)!.failedToFetch;
           studentId = newStudentId;
-          studentClass =
-              response.data[0]['stuClass'] ?? S.of(context).failedToFetch;
-          studentEmail =
-              response.data[0]['email'] ?? S.of(context).failedToFetch;
+          studentClass = response.data[0]['stuClass'] ??
+              AppLocalizations.of(context)!.failedToFetch;
+          studentEmail = response.data[0]['email'] ??
+              AppLocalizations.of(context)!.failedToFetch;
           avatarPath = savedAvatarPath ?? avatarPath;
         });
 
@@ -100,18 +100,18 @@ class _ProfilePageState extends State<ProfilePage> {
         await prefs.setString('studentEmail', studentEmail);
       } else {
         setState(() {
-          studentName = S.of(context).failedToFetch;
-          studentId = S.of(context).failedToFetch;
-          studentClass = S.of(context).failedToFetch;
-          studentEmail = S.of(context).failedToFetch;
+          studentName = AppLocalizations.of(context)!.failedToFetch;
+          studentId = AppLocalizations.of(context)!.failedToFetch;
+          studentClass = AppLocalizations.of(context)!.failedToFetch;
+          studentEmail = AppLocalizations.of(context)!.failedToFetch;
         });
       }
     } catch (e) {
       setState(() {
-        studentName = S.of(context).failedToFetch;
-        studentId = S.of(context).failedToFetch;
-        studentClass = S.of(context).failedToFetch;
-        studentEmail = S.of(context).failedToFetch;
+        studentName = AppLocalizations.of(context)!.failedToFetch;
+        studentId = AppLocalizations.of(context)!.failedToFetch;
+        studentClass = AppLocalizations.of(context)!.failedToFetch;
+        studentEmail = AppLocalizations.of(context)!.failedToFetch;
       });
     }
   }
@@ -138,7 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(S.of(context).profileTitle)),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.profileTitle)),
       body: RefreshIndicator(
         onRefresh: _refreshStudentInfo,
         child: ListView(
@@ -151,18 +151,18 @@ class _ProfilePageState extends State<ProfilePage> {
               child: avatarPath == null ? Icon(Icons.person, size: 60) : null,
             ),
             SizedBox(height: 10),
-            Text('${S.of(context).studentName} $studentName',
+            Text('${AppLocalizations.of(context)!.studentName} $studentName',
                 style: TextStyle(fontSize: 20)),
-            Text('${S.of(context).studentId} $studentId',
+            Text('${AppLocalizations.of(context)!.studentId} $studentId',
                 style: TextStyle(fontSize: 20)),
-            Text('${S.of(context).studentClass} $studentClass',
+            Text('${AppLocalizations.of(context)!.studentClass} $studentClass',
                 style: TextStyle(fontSize: 20)),
-            Text('${S.of(context).studentEmail} $studentEmail',
+            Text('${AppLocalizations.of(context)!.studentEmail} $studentEmail',
                 style: TextStyle(fontSize: 20)),
             SizedBox(height: 30),
             ElevatedButton(
               onPressed: _pickAvatar,
-              child: Text(S.of(context).updateAvatar),
+              child: Text(AppLocalizations.of(context)!.updateAvatar),
             ),
           ],
         ),

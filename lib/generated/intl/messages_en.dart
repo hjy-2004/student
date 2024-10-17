@@ -112,5 +112,109 @@ class MessageLookup extends MessageLookupByLibrary {
             "No account? Click to register"),
         "forgotPassword":
             MessageLookupByLibrary.simpleMessage("Forgot your password?"),
+        "appBarTitle":
+            MessageLookupByLibrary.simpleMessage("Student Registration"),
+        "step1Title": MessageLookupByLibrary.simpleMessage("Step 1"),
+        "step2Title": MessageLookupByLibrary.simpleMessage("Step 2"),
+        "step3Title": MessageLookupByLibrary.simpleMessage("Step 3"),
+        "confirmPassword":
+            MessageLookupByLibrary.simpleMessage("Confirm Password"),
+        "studentIdHint":
+            MessageLookupByLibrary.simpleMessage("Please enter student ID"),
+        "passwordHint":
+            MessageLookupByLibrary.simpleMessage("Please enter password"),
+        "passwordMismatchHint": MessageLookupByLibrary.simpleMessage(
+            "The two passwords do not match"),
+        "classNameId": MessageLookupByLibrary.simpleMessage("Class"),
+        "classNameHint":
+            MessageLookupByLibrary.simpleMessage("Please enter class"),
+        "studentNameHint":
+            MessageLookupByLibrary.simpleMessage("Please enter name"),
+        "selectTeacher": MessageLookupByLibrary.simpleMessage("Select Teacher"),
+        "selectTeacherHint":
+            MessageLookupByLibrary.simpleMessage("Please select a teacher"),
+        "qqEmail": MessageLookupByLibrary.simpleMessage("QQ Email"),
+        "qqEmailHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter a valid QQ email"),
+        "verificationCode":
+            MessageLookupByLibrary.simpleMessage("Verification Code"),
+        "sendVerificationCode":
+            MessageLookupByLibrary.simpleMessage("Send Code"),
+        "verificationCodeHint": MessageLookupByLibrary.simpleMessage(
+            "Please enter the verification code"),
+        "registerFailed":
+            MessageLookupByLibrary.simpleMessage("Registration Failed"),
+        "step1Failed": MessageLookupByLibrary.simpleMessage(
+            "Step 1 registration failed, please check input"),
+        "step2Failed": MessageLookupByLibrary.simpleMessage(
+            "Step 2 registration failed, please check input"),
+        "step3Failed": MessageLookupByLibrary.simpleMessage(
+            "Step 3 registration failed, please check input"),
+        "usernameExists": MessageLookupByLibrary.simpleMessage(
+            "Student ID already registered"),
+        "usernameExistsHint": MessageLookupByLibrary.simpleMessage(
+            "Student ID already registered, please use a different ID"),
+        "classInfoMissing": MessageLookupByLibrary.simpleMessage(
+            "Class information cannot be empty"),
+        "teacherSelectionError": MessageLookupByLibrary.simpleMessage(
+            "Please select a valid teacher"),
+        "registrationSuccess":
+            MessageLookupByLibrary.simpleMessage("Registration Successful"),
+        "verificationCodeSent": MessageLookupByLibrary.simpleMessage(
+            "Verification code sent to your QQ email"),
+        "verificationCodeSendFailed": MessageLookupByLibrary.simpleMessage(
+            "Failed to send verification code, please try again"),
+        "verificationCodeError": MessageLookupByLibrary.simpleMessage(
+            "Invalid or expired verification code"),
+        "checkInput": MessageLookupByLibrary.simpleMessage(
+            "Registration failed, please check input"),
+        "enterEmail":
+            MessageLookupByLibrary.simpleMessage("Please enter QQ email first"),
+        "checkUserEmailError": MessageLookupByLibrary.simpleMessage(
+            "Failed to check user email, please try again"),
+        "checkUserEmailFailure": MessageLookupByLibrary.simpleMessage(
+            "Check user email failed: {error}"),
+        "bindEmailSuccess":
+            MessageLookupByLibrary.simpleMessage("Email bound successfully"),
+        "bindEmailFailure": MessageLookupByLibrary.simpleMessage(
+            "Failed to bind email, please try again"),
+        "userNotFound": MessageLookupByLibrary.simpleMessage(
+            "User not found, please register first"),
+        "emailCannotBeEmpty":
+            MessageLookupByLibrary.simpleMessage("Email cannot be empty"),
+        "sendVerificationCodeFailure": MessageLookupByLibrary.simpleMessage(
+            "Failed to send verification code, please try again"),
+        "resetPasswordSuccess": MessageLookupByLibrary.simpleMessage(
+            "Password reset successfully, please log in with the new password"),
+        "resetPasswordFailure": MessageLookupByLibrary.simpleMessage(
+            "Failed to reset password, please try again"),
+        "bindEmailDialogTitle":
+            MessageLookupByLibrary.simpleMessage("Bind Email"),
+        "bindEmailDialogContent": MessageLookupByLibrary.simpleMessage(
+            "Please enter your QQ email to bind"),
+        "verificationCodeLabel":
+            MessageLookupByLibrary.simpleMessage("Verification Code"),
+        "newPasswordLabel":
+            MessageLookupByLibrary.simpleMessage("New Password"),
+        "sendVerificationCodeDialogTitle":
+            MessageLookupByLibrary.simpleMessage("Verify Email"),
+        "sendingVerificationCodeToEmail": (email) =>
+            "Sending verification code to your email $email",
+        "enterVerificationCodeDialogTitle":
+            MessageLookupByLibrary.simpleMessage("Enter Verification Code"),
+        "enterVerificationCodeSentToEmail": (email) =>
+            "Please enter the verification code sent to your email $email",
+        "errorDialogTitle": MessageLookupByLibrary.simpleMessage("Error"),
+        "successDialogTitle": MessageLookupByLibrary.simpleMessage("Success"),
+        "nextStep": MessageLookupByLibrary.simpleMessage("Next Step"),
+        "resetPasswordButton":
+            MessageLookupByLibrary.simpleMessage("Verify and Reset Password"),
+        "studentIdLabel": MessageLookupByLibrary.simpleMessage("Student ID"),
+        "enterQqEmailToBind": MessageLookupByLibrary.simpleMessage(
+            "Please enter your QQ email to bind"),
+        "fieldsCannotBeEmpty": MessageLookupByLibrary.simpleMessage(
+            "The email address, verification code, and new password cannot be empty"),
+        "fileManagement":
+            MessageLookupByLibrary.simpleMessage("File management"),
       };
 }

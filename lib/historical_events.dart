@@ -21,7 +21,7 @@ class _HistoricalEventsScreenState extends State<HistoricalEventsScreen> {
     super.initState();
     _getCurrentDate();
     _loadHistoricalEvents();
-    // _fetchHistoricalEvents();
+    _fetchHistoricalEvents();
   }
 
   void _getCurrentDate() {

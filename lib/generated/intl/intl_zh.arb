@@ -21,6 +21,7 @@
   "accountManagement": "账号管理",
   "close": "关闭",
   "notebook": "笔记本",
+  "fileManagement":"文件管理",
   "changePassword": "修改密码",
   "logout": "退出登录",
   "enterOldPassword": "输入旧密码",
@@ -34,8 +35,6 @@
   "logoutConfirmation": "您确定要退出登录吗？",
   "confirm": "确认",
   "cancel": "取消",
-  "notebookTitle": "笔记本",
-  "notebook_title": "笔记本",
   "edit_note": "修改笔记",
   "add_note": "新增笔记",
   "input_note_title": "输入笔记标题",
@@ -62,5 +61,81 @@
   "loginSuccess": "登录成功！",
   "loginFailed": "登录失败",
   "noAccountRegister": "没有账号吗？点击注册",
-  "forgotPassword": "忘记密码了吗？"
-}
+  "forgotPassword": "忘记密码了吗？",
+  "appBarTitle": "学生注册",
+  "step1Title": "步骤 1",
+  "step2Title": "步骤 2",
+  "step3Title": "步骤 3",
+  "confirmPassword": "确认密码",
+  "studentIdHint": "请输入学号",
+  "passwordHint": "请输入密码",
+  "passwordMismatchHint": "两次输入的密码不一致",
+  "classNameId":"班级",
+  "classNameHint": "请输入班级",
+  "studentNameHint": "请输入姓名",
+  "selectTeacher": "选择老师",
+  "selectTeacherHint": "请选择老师",
+  "qqEmail": "QQ邮箱",
+  "qqEmailHint": "请输入正确的QQ邮箱",
+  "verificationCode": "验证码",
+  "sendVerificationCode": "发送验证码",
+  "verificationCodeHint": "请输入验证码",
+  "registerFailed": "注册失败",
+  "step1Failed": "步骤 1 注册失败，请检查输入内容",
+  "step2Failed": "步骤 2 注册失败，请检查输入内容",
+  "step3Failed": "步骤 3 注册失败，请检查输入内容",
+  "usernameExists": "学号已经注册",
+  "usernameExistsHint": "学号已经注册，请使用其他学号",
+  "classInfoMissing": "班级信息不能为空",
+  "teacherSelectionError": "请选择正确的老师",
+  "registrationSuccess": "注册成功",
+  "verificationCodeSent": "验证码已发送到您的QQ邮箱",
+  "verificationCodeSendFailed": "发送验证码失败，请重试",
+  "verificationCodeError": "验证码错误或已过期",
+  "checkInput": "注册失败，请检查输入内容",
+  "enterEmail": "请先输入QQ邮箱",
+    "checkUserEmailError": "无法检查用户邮箱，请重试",
+    "checkUserEmailFailure": "检查用户邮箱失败",
+    "emailCannotBeEmpty": "邮箱不能为空",
+    "bindEmailSuccess": "邮箱绑定成功",
+    "bindEmailFailure": "邮箱绑定失败，请重试",
+    "userNotFound": "用户不存在，请先注册账号",
+    "verificationSent": "验证码已发送，请检查邮箱",
+    "verificationCodeSendFailed": "发送验证码失败，请重试",
+    "checkUserEmailFailure": "发送验证码失败{error}",
+
+    "fieldsCannotBeEmpty": "邮箱、验证码和新密码不能为空",
+    "resetPasswordSuccess": "密码重置成功，请使用新密码登录",
+    "resetPasswordFailure": "密码重置失败，请重试",
+    "sendVerificationCodeDialogTitle": "验证邮箱",
+    "sendingVerificationCodeToEmail": "将通过你的QQ邮箱 {email} 发送验证码",
+    "@sendingVerificationCodeToEmail":{
+      "description": "提示用户将通过QQ邮箱发送验证码",
+      "placeholders": {
+        "email": {
+          "type": "String",
+          "example": "example@example.com"
+        }
+      }
+    },
+    "verificationCodeHint": "输入验证码",
+    "@enterVerificationCodeSentToEmail": {
+      "description": "提示用户输入发送到他们邮箱的验证码的消息",
+      "placeholders": {
+        "email": {
+          "type": "String",
+          "example": "example@example.com"
+        }
+      }
+    },
+    "enterVerificationCodeSentToEmail": "请输入发送到你的邮箱 {email} 的验证码",
+    "newPasswordLabel": "新密码",
+    "resetPasswordButton": "验证并重置密码",
+    "bindEmailDialogTitle": "绑定邮箱",
+    "enterQqEmailToBind": "请输入你的QQ邮箱以进行绑定",
+    "nextStep": "下一步",
+    "prompt": "提示",
+    "successDialogTitle": "成功",
+    "passwordResetComplete": "密码重置成功"
+  }
+  

@@ -57,6 +57,7 @@ dependencies:
   intl_utils: ^2.8.7
   flutter_localizations:
     sdk: flutter
+  file_picker: ^8.1.2
   
   
 

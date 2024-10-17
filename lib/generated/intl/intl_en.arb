@@ -21,6 +21,7 @@
   "accountManagement": "Account Management",
   "close": "Close",
   "notebook": "Notebook",
+  "fileManagement":"File management",
   "changePassword": "Change Password",
   "logout": "Logout",
   "enterOldPassword": "Enter Old Password",
@@ -33,8 +34,6 @@
   "confirmLogout": "Confirm Logout",
   "logoutConfirmation": "Are you sure you want to log out?",
   "confirm": "Confirm",
-  "notebookTitle": "Notebook",
-  "notebook_title": "Notebook",
   "edit_note": "Edit Note",
   "add_note": "Add Note",
   "input_note_title": "Enter note title",
@@ -62,5 +61,80 @@
   "loginSuccess": "Login successful!",
   "loginFailed": "Login failed",
   "noAccountRegister": "No account? Click to register",
-  "forgotPassword": "Forgot your password?"
+  "forgotPassword": "Forgot your password?",
+  "appBarTitle": "Student Registration",
+  "step1Title": "Step 1",
+  "step2Title": "Step 2",
+  "step3Title": "Step 3",
+  "confirmPassword": "Confirm Password",
+  "studentIdHint": "Please enter student ID",
+  "passwordHint": "Please enter password",
+  "passwordMismatchHint": "The two passwords do not match",
+  "classNameId":"Classs",
+  "classNameHint": "Please enter class",
+  "studentNameHint": "Please enter name",
+  "selectTeacher": "Select Teacher",
+  "selectTeacherHint": "Please select a teacher",
+  "qqEmail": "QQ Email",
+  "qqEmailHint": "Please enter a valid QQ email",
+  "verificationCode": "Verification Code",
+  "sendVerificationCode": "Send Code",
+  "verificationCodeHint": "Please enter the verification code",
+  "registerFailed": "Registration Failed",
+  "step1Failed": "Step 1 registration failed, please check input",
+  "step2Failed": "Step 2 registration failed, please check input",
+  "step3Failed": "Step 3 registration failed, please check input",
+  "usernameExists": "Student ID already registered",
+  "usernameExistsHint": "Student ID already registered, please use a different ID",
+  "classInfoMissing": "Class information cannot be empty",
+  "teacherSelectionError": "Please select a valid teacher",
+  "registrationSuccess": "Registration Successful",
+  "verificationCodeSent": "Verification code sent to your QQ email",
+  "verificationCodeSendFailed": "Failed to send verification code, please try again",
+  "verificationCodeError": "Invalid or expired verification code",
+  "checkInput": "Registration failed, please check input",
+  "enterEmail": "Please enter QQ email first",
+  "checkUserEmailError": "Unable to check user email, please try again",
+  "checkUserEmailFailure": "Failed to check user email",
+  "emailCannotBeEmpty": "Email cannot be empty",
+  "bindEmailSuccess": "Email bound successfully",
+  "bindEmailFailure": "Failed to bind email, please try again",
+  "userNotFound": "User does not exist, please register an account",
+  "verificationSent": "Verification code sent, please check your email",
+  "verificationFailed": "Failed to send verification code, please try again",
+  "checkUserEmailFailure": "Failed to send verification code",
+  "fieldsCannotBeEmpty": "Email, verification code, and new password cannot be empty",
+  "resetPasswordSuccess": "Password reset successful, please log in with your new password",
+  "resetPasswordFailure": "Failed to reset password, please try again",
+  "sendVerificationCodeDialogTitle": "Verify Email",
+  "sendingVerificationCodeToEmail": "Sending verification code to your QQ email {email}",
+  "@sendingVerificationCodeToEmail":{
+      "description": "Prompt: The user will be sent a verification code through QQ email",
+      "placeholders": {
+        "email": {
+          "type": "String",
+          "example": "example@example.com"
+        }
+      }
+    },
+  "verificationCodeHint": "Enter Verification Code",
+  "@enterVerificationCodeSentToEmail": {
+    "description": "A message that prompts the user to enter a verification code sent to their mailbox",
+    "placeholders": {
+      "email": {
+        "type": "String",
+        "example": "example@example.com"
+      }
+    }
+  },
+  "enterVerificationCodeSentToEmail": "Please enter the verification code sent to your email {email}",
+  "newPasswordLabel": "New Password",
+  "resetPasswordButton": "Verify and Reset Password",
+  "bindEmailDialogTitle": "Bind Email",
+  "enterQqEmailToBind": "Please enter your QQ email to bind",
+  "nextStep": "Next Step",
+  "prompt": "Prompt",
+  "successDialogTitle": "Success",
+  "passwordResetComplete": "Password reset successful"
+
 }

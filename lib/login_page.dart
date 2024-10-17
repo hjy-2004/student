@@ -1,11 +1,13 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_constants.dart';
 import 'forgotPassword_page.dart';
 import 'generated/intl/app_localizations.dart';
 import 'home_page.dart';
+import 'main.dart';
 import 'register_page.dart';
 
 // 检查本地是否保存了用户名和密码
@@ -92,6 +94,9 @@ class _LoginPageState extends State<LoginPage> {
           // 跳转到主页
           Navigator.pushReplacement(
               context, MaterialPageRoute(builder: (context) => HomePage()));
+          // 登录成功时，清除之前的文件信息
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          await prefs.remove('uploadedFiles'); // 清除已上传文件列表
         } else {
           // 处理登录失败
           setState(() {
@@ -120,7 +125,25 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.login)),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.login),
+        actions: [
+          PopupMenuButton<Locale>(
+            onSelected: (Locale locale) {
+              Provider.of<LocaleNotifier>(context, listen: false)
+                  .setLocale(locale);
+            },
+            itemBuilder: (BuildContext context) {
+              return [
+                PopupMenuItem<Locale>(
+                    value: Locale('en', ''), child: Text('English')),
+                PopupMenuItem<Locale>(
+                    value: Locale('zh', ''), child: Text('中文')),
+              ];
+            },
+          ),
+        ],
+      ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

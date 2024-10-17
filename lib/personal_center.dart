@@ -6,6 +6,7 @@ import 'package:flutter_2024_09_22/api_constants.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'account_management.dart';
+import 'file_management_page.dart'; // 新的文件管理页面导入
 import 'generated/intl/app_localizations.dart';
 import 'notebook_page.dart';
 import 'profile_page.dart';
@@ -171,6 +172,33 @@ class _PersonalCenterScreenState extends State<PersonalCenterScreen> {
                     Icons.chevron_right,
                     color: Colors.grey[300],
                   ),
+                ],
+              ),
+            ),
+            Divider(),
+            SizedBox(height: 30),
+            GestureDetector(
+              onTap: () {
+                // 打开文件管理页面
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => FileManagementPage(),
+                  ),
+                );
+              },
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Icon(Icons.file_present, color: Colors.blue),
+                      SizedBox(width: 10),
+                      Text(localizations.fileManagement,
+                          style: TextStyle(fontSize: 15)),
+                    ],
+                  ),
+                  Icon(Icons.chevron_right, color: Colors.grey[300]),
                 ],
               ),
             ),

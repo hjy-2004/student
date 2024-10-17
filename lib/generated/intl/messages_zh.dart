@@ -91,5 +91,79 @@ class MessageLookup extends MessageLookupByLibrary {
         "loginFailed": MessageLookupByLibrary.simpleMessage("登录失败"),
         "noAccountRegister": MessageLookupByLibrary.simpleMessage("没有账号吗？点击注册"),
         "forgotPassword": MessageLookupByLibrary.simpleMessage("忘记密码了吗？"),
+        "appBarTitle": MessageLookupByLibrary.simpleMessage("学生注册"),
+        "step1Title": MessageLookupByLibrary.simpleMessage("步骤 1"),
+        "step2Title": MessageLookupByLibrary.simpleMessage("步骤 2"),
+        "step3Title": MessageLookupByLibrary.simpleMessage("步骤 3"),
+        "confirmPassword": MessageLookupByLibrary.simpleMessage("确认密码"),
+        "studentIdHint": MessageLookupByLibrary.simpleMessage("请输入学号"),
+        "passwordHint": MessageLookupByLibrary.simpleMessage("请输入密码"),
+        "passwordMismatchHint":
+            MessageLookupByLibrary.simpleMessage("两次输入的密码不一致"),
+        "classNameId": MessageLookupByLibrary.simpleMessage("班级"),
+        "classNameHint": MessageLookupByLibrary.simpleMessage("请输入班级"),
+        "studentNameHint": MessageLookupByLibrary.simpleMessage("请输入姓名"),
+        "selectTeacher": MessageLookupByLibrary.simpleMessage("选择老师"),
+        "selectTeacherHint": MessageLookupByLibrary.simpleMessage("请选择老师"),
+        "qqEmail": MessageLookupByLibrary.simpleMessage("QQ邮箱"),
+        "qqEmailHint": MessageLookupByLibrary.simpleMessage("请输入正确的QQ邮箱"),
+        "verificationCode": MessageLookupByLibrary.simpleMessage("验证码"),
+        "sendVerificationCode": MessageLookupByLibrary.simpleMessage("发送验证码"),
+        "verificationCodeHint": MessageLookupByLibrary.simpleMessage("请输入验证码"),
+        "registerFailed": MessageLookupByLibrary.simpleMessage("注册失败"),
+        "step1Failed":
+            MessageLookupByLibrary.simpleMessage("步骤 1 注册失败，请检查输入内容"),
+        "step2Failed":
+            MessageLookupByLibrary.simpleMessage("步骤 2 注册失败，请检查输入内容"),
+        "step3Failed":
+            MessageLookupByLibrary.simpleMessage("步骤 3 注册失败，请检查输入内容"),
+        "usernameExists": MessageLookupByLibrary.simpleMessage("学号已经注册"),
+        "usernameExistsHint":
+            MessageLookupByLibrary.simpleMessage("学号已经注册，请使用其他学号"),
+        "classInfoMissing": MessageLookupByLibrary.simpleMessage("班级信息不能为空"),
+        "teacherSelectionError":
+            MessageLookupByLibrary.simpleMessage("请选择正确的老师"),
+        "registrationSuccess": MessageLookupByLibrary.simpleMessage("注册成功"),
+        "verificationCodeSent":
+            MessageLookupByLibrary.simpleMessage("验证码已发送到您的QQ邮箱"),
+        "verificationCodeSendFailed":
+            MessageLookupByLibrary.simpleMessage("发送验证码失败，请重试"),
+        "verificationCodeError":
+            MessageLookupByLibrary.simpleMessage("验证码错误或已过期"),
+        "checkInput": MessageLookupByLibrary.simpleMessage("注册失败，请检查输入内容"),
+        "enterEmail": MessageLookupByLibrary.simpleMessage("请先输入QQ邮箱"),
+        "checkUserEmailError":
+            MessageLookupByLibrary.simpleMessage("无法检查用户邮箱，请重试"),
+        "checkUserEmailFailure": (error) => "检查用户邮箱失败: $error",
+        "bindEmailSuccess": MessageLookupByLibrary.simpleMessage("邮箱绑定成功"),
+        "bindEmailFailure": MessageLookupByLibrary.simpleMessage("邮箱绑定失败，请重试"),
+        "userNotFound": MessageLookupByLibrary.simpleMessage("用户不存在，请先注册账号"),
+        "emailCannotBeEmpty": MessageLookupByLibrary.simpleMessage("邮箱不能为空"),
+        "sendVerificationCodeFailure": (error) => "发送验证码失败:$error",
+        "resetPasswordSuccess":
+            MessageLookupByLibrary.simpleMessage("密码重置成功，请使用新密码登录"),
+        "resetPasswordFailure":
+            MessageLookupByLibrary.simpleMessage("密码重置失败，请重试"),
+        "bindEmailDialogTitle": MessageLookupByLibrary.simpleMessage("绑定邮箱"),
+        "bindEmailDialogContent":
+            MessageLookupByLibrary.simpleMessage("请输入你的QQ邮箱以进行绑定"),
+        "verificationCodeLabel": MessageLookupByLibrary.simpleMessage("验证码"),
+        "newPasswordLabel": MessageLookupByLibrary.simpleMessage("新密码"),
+        "sendVerificationCodeDialogTitle":
+            MessageLookupByLibrary.simpleMessage("验证邮箱"),
+        "sendingVerificationCodeToEmail": (email) => "将通过你的邮箱 $email 发送验证码",
+        "enterVerificationCodeDialogTitle":
+            MessageLookupByLibrary.simpleMessage("输入验证码"),
+        "enterVerificationCodeSentToEmail": (email) => "请输入发送到你的邮箱 $email 的验证码",
+        "errorDialogTitle": MessageLookupByLibrary.simpleMessage("提示"),
+        "successDialogTitle": MessageLookupByLibrary.simpleMessage("成功"),
+        "nextStep": MessageLookupByLibrary.simpleMessage("下一步"),
+        "resetPasswordButton": MessageLookupByLibrary.simpleMessage("验证并重置密码"),
+        "studentIdLabel": MessageLookupByLibrary.simpleMessage("学号"),
+        "enterQqEmailToBind":
+            MessageLookupByLibrary.simpleMessage("请输入你的QQ邮箱以进行绑定"),
+        "fieldsCannotBeEmpty":
+            MessageLookupByLibrary.simpleMessage("邮箱、验证码和新密码不能为空"),
+        "fileManagement": MessageLookupByLibrary.simpleMessage("文件管理"),
       };
 }

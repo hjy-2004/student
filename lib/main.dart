@@ -6,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'generated/intl/app_localizations.dart';
-import 'generated/l10n.dart';
 import 'home_page.dart';
 import 'login_page.dart';
 
@@ -32,9 +31,11 @@ class MyApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
             AppLocalizations.delegate, // 添加你的本地化委托
-            S.delegate, // 使用 S.delegate 替代 AppLocalizations.delegate
           ],
-          supportedLocales: S.delegate.supportedLocales, // 确保支持的语言列表与 S 一致
+          supportedLocales: [
+            Locale('en', ''), // 支持英文
+            Locale('zh', ''), // 支持中文
+          ], // 确保支持的语言列表与 S 一致
         );
       },
     );
@@ -115,5 +116,8 @@ class LocaleNotifier extends ChangeNotifier {
     _currentLocale = newLocale;
     notifyListeners();
     print('Locale changed to: ${newLocale.languageCode}'); // Debugging
+
+    Intl.defaultLocale = newLocale.languageCode;
+    print('Locale changed to: ${newLocale.languageCode}');
   }
 }

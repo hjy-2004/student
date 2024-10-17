@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 // ignore: unused_import
 import 'api_constants.dart';
+import 'generated/intl/app_localizations.dart';
 import 'login_page.dart';
 
 class StudentRegistrationPage extends StatefulWidget {
@@ -39,7 +40,7 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
 
   Future<void> _fetchTeachers() async {
     try {
-      final response = await Dio().get('$baseUrl:8081/api/teachers');
+      final response = await Dio().get('$baseUrl/api/teachers');
       if (response.statusCode == 200) {
         final List<dynamic> data = response.data;
         setState(() {
@@ -56,7 +57,7 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('学生注册')),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.appBarTitle)),
       body: Stepper(
         currentStep: _currentStep,
         onStepContinue: _nextStep,
@@ -70,29 +71,36 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
   List<Step> _getSteps() {
     return [
       Step(
-        title: Text('步骤 1'),
+        title: Text(AppLocalizations.of(context)!.step1Title),
         content: Form(
           key: _formKeyStep1,
           child: Column(
             children: [
               TextFormField(
                 controller: _studentIdController,
-                decoration: InputDecoration(labelText: '学号'),
-                validator: (value) => value!.isEmpty ? '请输入学号' : null,
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.studentId),
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.studentIdHint
+                    : null,
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: InputDecoration(labelText: '密码'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.password),
                 obscureText: true,
-                validator: (value) => value!.isEmpty ? '请输入密码' : null,
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.passwordHint
+                    : null,
               ),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration: InputDecoration(labelText: '确认密码'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.confirmPassword),
                 obscureText: true,
                 validator: (value) {
                   if (value != _passwordController.text) {
-                    return '两次输入的密码不一致';
+                    return AppLocalizations.of(context)!.passwordMismatchHint;
                   }
                   return null;
                 },
@@ -104,18 +112,22 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
         state: _currentStep > 0 ? StepState.complete : StepState.indexed,
       ),
       Step(
-        title: Text('步骤 2'),
+        title: Text(AppLocalizations.of(context)!.step2Title),
         content: Form(
           key: _formKeyStep2,
           child: Column(
             children: [
               TextFormField(
                 controller: _studentIdController, // 绑定到学号控制器
-                decoration: InputDecoration(labelText: '学号'),
-                validator: (value) => value!.isEmpty ? '请输入学号' : null,
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.studentId),
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.studentIdHint
+                    : null,
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: '班级'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.classNameId),
                 onChanged: (value) {
                   _className = value; // 确保班级信息被更新
                 },
@@ -127,12 +139,16 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
                 },
               ),
               TextFormField(
-                decoration: InputDecoration(labelText: '姓名'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.studentName),
                 onChanged: (value) => _studentName = value,
-                validator: (value) => value!.isEmpty ? '请输入姓名' : null,
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.studentNameHint
+                    : null,
               ),
               DropdownButtonFormField<String>(
-                decoration: InputDecoration(labelText: '选择老师'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.selectTeacher),
                 items: _teachers.map((teacher) {
                   return DropdownMenuItem<String>(
                     value: teacher['id'],
@@ -144,17 +160,20 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
                     _teacherId = value ?? '';
                   });
                 },
-                validator: (value) => value == null ? '请选择老师' : null,
+                validator: (value) => value == null
+                    ? AppLocalizations.of(context)!.selectTeacherHint
+                    : null,
               ),
               TextFormField(
                 controller: _emailController,
-                decoration: InputDecoration(labelText: 'QQ邮箱'),
+                decoration: InputDecoration(
+                    labelText: AppLocalizations.of(context)!.qqEmail),
                 keyboardType: TextInputType.emailAddress,
                 validator: (value) {
                   if (value == null ||
                       !RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
                           .hasMatch(value)) {
-                    return '请输入正确的QQ邮箱';
+                    return AppLocalizations.of(context)!.qqEmailHint;
                   }
                   return null;
                 },
@@ -166,7 +185,7 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
         state: _currentStep > 1 ? StepState.complete : StepState.indexed,
       ),
       Step(
-        title: Text('步骤 3'),
+        title: Text(AppLocalizations.of(context)!.step3Title),
         content: Form(
           key: _formKeyStep3,
           child: Column(
@@ -174,13 +193,16 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
               TextFormField(
                 controller: _verificationCodeController,
                 decoration: InputDecoration(
-                  labelText: '验证码',
+                  labelText: AppLocalizations.of(context)!.verificationCode,
                   suffixIcon: TextButton(
                     onPressed: _sendVerificationCode,
-                    child: Text('发送验证码'),
+                    child: Text(
+                        AppLocalizations.of(context)!.sendVerificationCode),
                   ),
                 ),
-                validator: (value) => value!.isEmpty ? '请输入验证码' : null,
+                validator: (value) => value!.isEmpty
+                    ? AppLocalizations.of(context)!.verificationCodeHint
+                    : null,
               ),
             ],
           ),
@@ -200,8 +222,8 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
           _currentStep += 1;
         });
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('步骤 1 注册失败，请检查输入内容')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.step1Failed)));
       }
     } else if (_currentStep == 1 && _formKeyStep2.currentState!.validate()) {
       _formKeyStep2.currentState!.save();
@@ -213,23 +235,23 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
             _currentStep += 1;
           });
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('步骤 2 注册失败，请检查输入内容')));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(AppLocalizations.of(context)!.step2Failed)));
         }
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('班级信息不能为空')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.classInfoMissing)));
       }
     } else if (_currentStep == 2 && _formKeyStep3.currentState!.validate()) {
       _formKeyStep3.currentState!.save();
       bool step3Success = await _registerStep3();
       if (step3Success) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('注册成功')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.registrationSuccess)));
         Navigator.of(context).pushReplacementNamed('/home');
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('步骤 3 注册失败，请检查输入内容')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.step3Failed)));
       }
     }
   }
@@ -256,14 +278,14 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: Text('注册失败'),
-            content: Text('学号已经注册，请使用其他学号'),
+            title: Text(AppLocalizations.of(context)!.registerFailed),
+            content: Text(AppLocalizations.of(context)!.usernameExists),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.of(context).pop(); // 关闭对话框
                 },
-                child: Text('确定'),
+                child: Text(AppLocalizations.of(context)!.confirm),
               ),
             ],
           );
@@ -313,8 +335,9 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
       );
 
       if (selectedTeacher.isEmpty) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('请选择正确的老师')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content:
+                Text(AppLocalizations.of(context)!.teacherSelectionError)));
         return false;
       }
 
@@ -385,22 +408,23 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
         ),
       );
       if (response.statusCode == 200 && response.data['success'] == true) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('注册成功')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.registrationSuccess)));
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (context) => LoginPage()),
           (route) => false, // 清空导航堆栈
         ); // 跳转到登录页面
         return true;
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(response.data['message'] ?? '验证码错误或已过期')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(response.data['message'] ??
+                AppLocalizations.of(context)!.verificationCodeError)));
         return false;
       }
     } catch (e) {
       print('步骤 3 注册失败: $e');
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('注册失败，请检查输入内容')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.checkInput)));
       return false;
     }
   }
@@ -413,20 +437,23 @@ class _StudentRegistrationPageState extends State<StudentRegistrationPage> {
           data: {'qqEmail': _emailController.text},
         );
         if (response.statusCode == 200) {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('验证码已发送到您的QQ邮箱')));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content:
+                  Text(AppLocalizations.of(context)!.verificationCodeSent)));
         } else {
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('发送验证码失败，请重试')));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(
+                  AppLocalizations.of(context)!.verificationCodeSendFailed)));
         }
       } catch (e) {
         print('发送验证码失败: $e');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('发送验证码失败，请重试')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                AppLocalizations.of(context)!.verificationCodeSendFailed)));
       }
     } else {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('请先输入QQ邮箱')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.enterEmail)));
     }
   }
 }
