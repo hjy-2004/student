@@ -176,6 +176,15 @@ public class StuUserController {
         return ResponseEntity.ok(exists);
     }
 
+    // 检查学号是否已经存在
+    @GetMapping("/check-step2-completion")
+    public ResponseEntity<Boolean> checkStep2Completion(@RequestParam String username) {
+        boolean isCompleted = stuUserRepository.existsByUsername(username);  // 直接判断学号是否存在
+        return ResponseEntity.ok(isCompleted);
+    }
+
+
+
 
 
 

@@ -16,6 +16,10 @@ public interface StuUserRepository extends JpaRepository<StuUser, Integer> {
 
     List<StuUser> findByUsername(String username);
 
+//    @Query("SELECT s FROM StuUser s WHERE LOWER(s.username) = LOWER(?1)")
+//    Optional<StuUser> findByUsernameCustom(String username);
+
+
     StuUser findFirstByUsername(String username);
 
 

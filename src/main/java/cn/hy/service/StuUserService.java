@@ -80,6 +80,23 @@ public class StuUserService {
     }
 
 
+//    public boolean isStep2Completed(String username) {
+//        Optional<StuUser> studentOpt = stuUserRepository.findByUsernameCustom(username);
+//
+//        if (studentOpt.isPresent()) {
+//            StuUser student = studentOpt.get();
+//            System.out.println("stuClass: " + student.getStuClass());
+//            System.out.println("teacher: " + student.getTeacher());
+//            System.out.println("email: " + student.getEmail());
+//
+//            return student.getStuClass() != null &&
+//                    student.getTeacher() != null &&
+//                    student.getEmail() != null;
+//        }
+//
+//        return false;
+//    }
+
 
 
 
