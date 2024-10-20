@@ -5,6 +5,7 @@ import 'package:dio/dio.dart'; // 用于上传文件
 import 'package:file_picker/file_picker.dart'; // 用于选择任意文件
 import 'package:flutter/material.dart';
 import 'package:flutter_2024_09_22/api_constants.dart';
+import 'package:flutter_2024_09_22/generated/intl/app_localizations.dart';
 import 'package:open_file/open_file.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,8 +31,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
       String? studentId = prefs.getString('username'); // 获取学号
 
       if (studentId == null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('未找到登录信息')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginInfoNotFound)));
         return;
       }
 
@@ -80,14 +81,14 @@ class _FileManagementPageState extends State<FileManagementPage> {
           });
         } else {
           // 只在有文件的情况下显示提示
-          ScaffoldMessenger.of(context)
-              .showSnackBar(SnackBar(content: Text('获取文件列表失败')));
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(AppLocalizations.of(context)!.fetchFilesFail)));
         }
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('获取文件列表出错')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(AppLocalizations.of(context)!.fetchFilesError)));
     } finally {
       setState(() {
         isLoading = false; // 结束加载
@@ -114,8 +115,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
       String? studentId = prefs.getString('username'); // 获取学号
 
       if (studentId == null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('未找到登录信息')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginInfoNotFound)));
         return;
       }
 
@@ -138,8 +139,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
         setState(() {
           uploadedFiles.add(File(serverFilePath)); // 使用后端返回的文件路径
         });
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('文件上传成功')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.uploadSuccess)));
 
         // 保存更新后的文件列表
         await prefs.setString(
@@ -148,13 +149,13 @@ class _FileManagementPageState extends State<FileManagementPage> {
               return {"filePath": file.path};
             }).toList()));
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('文件上传失败')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.uploadFail)));
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('上传出错')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.uploadError)));
     }
   }
 
@@ -165,8 +166,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
       String? studentId = prefs.getString('username'); // 获取学号
 
       if (studentId == null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('未找到登录信息')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginInfoNotFound)));
         return;
       }
 
@@ -193,19 +194,20 @@ class _FileManagementPageState extends State<FileManagementPage> {
         File downloadedFile = File(localFilePath);
         await downloadedFile.writeAsBytes(response.data);
 
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('文件下载成功，保存在: $localFilePath')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(
+                AppLocalizations.of(context)!.downloadSuccess(localFilePath))));
 
         // 直接查看已下载文件
         _viewDownloadedFile(downloadedFile);
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('文件下载失败')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.downloadFail)));
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('文件下载出错')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.downloadError)));
     }
   }
 
@@ -221,8 +223,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
       String? studentId = prefs.getString('username'); // 获取学号
 
       if (studentId == null) {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('未找到登录信息')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.loginInfoNotFound)));
         return;
       }
 
@@ -237,8 +239,8 @@ class _FileManagementPageState extends State<FileManagementPage> {
         setState(() {
           uploadedFiles.remove(file); // 从列表中移除文件
         });
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('文件删除成功')));
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            content: Text(AppLocalizations.of(context)!.deleteSuccess)));
 
         // 更新本地保存的数据
         await prefs.setString(
@@ -247,13 +249,13 @@ class _FileManagementPageState extends State<FileManagementPage> {
               return {"filePath": file.path};
             }).toList()));
       } else {
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('文件删除失败')));
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text(AppLocalizations.of(context)!.deleteFail)));
       }
     } catch (e) {
       print(e);
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('删除文件出错')));
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(AppLocalizations.of(context)!.deleteError)));
     }
   }
 
@@ -267,12 +269,13 @@ class _FileManagementPageState extends State<FileManagementPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('文件管理'),
+        title: Text(AppLocalizations.of(context)!.fileManagement),
       ),
       body: isLoading
           ? Center(child: CircularProgressIndicator()) // 显示加载指示器
           : uploadedFiles.isEmpty
-              ? Center(child: Text('空空如也，尚未上传任何文件。')) // 显示空数据提示
+              ? Center(
+                  child: Text(AppLocalizations.of(context)!.noFiles)) // 显示空数据提示
               : ListView.builder(
                   itemCount: uploadedFiles.length,
                   itemBuilder: (context, index) {

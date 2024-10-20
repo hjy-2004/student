@@ -953,6 +953,152 @@ class AppLocalizations {
           'Prompts the user that the email address, verification code, and new password cannot be empty',
     );
   }
+
+  String get noFiles {
+    return Intl.message(
+      'No files uploaded yet.',
+      name: 'noFiles',
+      desc: 'Indicates that no files have been uploaded yet.',
+    );
+  }
+
+  String get uploadSuccess {
+    return Intl.message(
+      'File uploaded successfully.',
+      name: 'uploadSuccess',
+      desc: 'Indicates that the file was uploaded successfully.',
+    );
+  }
+
+  String get uploadFail {
+    return Intl.message(
+      'File upload failed.',
+      name: 'uploadFail',
+      desc: 'Indicates that the file upload has failed.',
+    );
+  }
+
+  String downloadSuccess(String localFilePath) {
+    return Intl.message(
+      'File downloaded successfully, saved at: $localFilePath',
+      name: 'downloadSuccess',
+      args: [localFilePath],
+      desc:
+          'Indicates that the file was downloaded successfully, saved at a specific location.',
+    );
+  }
+
+  String get downloadFail {
+    return Intl.message(
+      'File download failed.',
+      name: 'downloadFail',
+      desc: 'Indicates that the file download has failed.',
+    );
+  }
+
+  String get deleteSuccess {
+    return Intl.message(
+      'File deleted successfully.',
+      name: 'deleteSuccess',
+      desc: 'Indicates that the file was deleted successfully.',
+    );
+  }
+
+  String get deleteFail {
+    return Intl.message(
+      'File deletion failed.',
+      name: 'deleteFail',
+      desc: 'Indicates that the file deletion has failed.',
+    );
+  }
+
+  String get fetchFilesError {
+    return Intl.message(
+      'Error fetching file list.',
+      name: 'fetchFilesError',
+      desc: 'Indicates an error occurred while fetching the file list.',
+    );
+  }
+
+  String get loginInfoNotFound {
+    return Intl.message(
+      'Login information not found.',
+      name: 'loginInfoNotFound',
+      desc: 'Indicates that the login information could not be found.',
+    );
+  }
+
+  String get fetchFilesFail {
+    return Intl.message(
+      'Failed to fetch file list.',
+      name: 'fetchFilesFail',
+      desc: 'Indicates that fetching the file list has failed.',
+    );
+  }
+
+  String get uploadError {
+    return Intl.message(
+      'Upload error.',
+      name: 'uploadError',
+      desc: 'Indicates an error occurred during upload.',
+    );
+  }
+
+  String get downloadError {
+    return Intl.message(
+      'Download error.',
+      name: 'downloadError',
+      desc: 'Indicates an error occurred during download.',
+    );
+  }
+
+  String get deleteError {
+    return Intl.message(
+      'Error deleting file.',
+      name: 'deleteError',
+      desc: 'Indicates an error occurred while deleting the file.',
+    );
+  }
+
+  String get selectFile {
+    return Intl.message(
+      'Select file.',
+      name: 'selectFile',
+      desc: 'Prompt to select a file.',
+    );
+  }
+
+  String get fileSelected {
+    return Intl.message(
+      'File selected.',
+      name: 'fileSelected',
+      desc: 'Indicates that a file has been selected.',
+    );
+  }
+
+  String get fileNotFound {
+    return Intl.message(
+      'File not found.',
+      name: 'fileNotFound',
+      desc: 'Indicates that the file could not be found.',
+    );
+  }
+
+  String get errorOccurred {
+    return Intl.message(
+      'An error occurred, please try again.',
+      name: 'errorOccurred',
+      desc: 'General error message prompting the user to try again.',
+    );
+  }
+
+  String get fileViewer {
+    return Intl.message(
+      'File Viewer',
+      name: 'fileViewer',
+      desc: 'Title for the file viewer section.',
+    );
+  }
 }
 
 class _AppLocalizationsDelegate

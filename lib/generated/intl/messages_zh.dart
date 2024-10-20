@@ -165,5 +165,23 @@ class MessageLookup extends MessageLookupByLibrary {
         "fieldsCannotBeEmpty":
             MessageLookupByLibrary.simpleMessage("邮箱、验证码和新密码不能为空"),
         "fileManagement": MessageLookupByLibrary.simpleMessage("文件管理"),
+        "noFiles": MessageLookupByLibrary.simpleMessage("空空如也，尚未上传任何文件。"),
+        "uploadSuccess": MessageLookupByLibrary.simpleMessage("文件上传成功"),
+        "uploadFail": MessageLookupByLibrary.simpleMessage("文件上传失败"),
+        "downloadSuccess": (localFilePath) => "文件下载成功，保存在:$localFilePath ",
+        "downloadFail": MessageLookupByLibrary.simpleMessage("文件下载失败"),
+        "deleteSuccess": MessageLookupByLibrary.simpleMessage("文件删除成功"),
+        "deleteFail": MessageLookupByLibrary.simpleMessage("文件删除失败"),
+        "fetchFilesError": MessageLookupByLibrary.simpleMessage("获取文件列表出错"),
+        "loginInfoNotFound": MessageLookupByLibrary.simpleMessage("未找到登录信息"),
+        "fetchFilesFail": MessageLookupByLibrary.simpleMessage("获取文件列表失败"),
+        "uploadError": MessageLookupByLibrary.simpleMessage("上传出错"),
+        "downloadError": MessageLookupByLibrary.simpleMessage("下载出错"),
+        "deleteError": MessageLookupByLibrary.simpleMessage("删除文件出错"),
+        "selectFile": MessageLookupByLibrary.simpleMessage("选择文件"),
+        "fileSelected": MessageLookupByLibrary.simpleMessage("已选择文件"),
+        "fileNotFound": MessageLookupByLibrary.simpleMessage("文件未找到"),
+        "errorOccurred": MessageLookupByLibrary.simpleMessage("发生错误，请重试"),
+        "fileViewer": MessageLookupByLibrary.simpleMessage("文件查看器")
       };
 }

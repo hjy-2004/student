@@ -216,5 +216,36 @@ class MessageLookup extends MessageLookupByLibrary {
             "The email address, verification code, and new password cannot be empty"),
         "fileManagement":
             MessageLookupByLibrary.simpleMessage("File management"),
+        "noFiles":
+            MessageLookupByLibrary.simpleMessage("No files uploaded yet."),
+        "uploadSuccess":
+            MessageLookupByLibrary.simpleMessage("File uploaded successfully."),
+        "uploadFail":
+            MessageLookupByLibrary.simpleMessage("File upload failed."),
+        "downloadSuccess": (localFilePath) =>
+            "File downloaded successfully, saved at: $localFilePath",
+        "downloadFail":
+            MessageLookupByLibrary.simpleMessage("File download failed."),
+        "deleteSuccess":
+            MessageLookupByLibrary.simpleMessage("File deleted successfully."),
+        "deleteFail":
+            MessageLookupByLibrary.simpleMessage("File deletion failed."),
+        "fetchFilesError":
+            MessageLookupByLibrary.simpleMessage("Error fetching file list."),
+        "loginInfoNotFound": MessageLookupByLibrary.simpleMessage(
+            "Login information not found."),
+        "fetchFilesFail":
+            MessageLookupByLibrary.simpleMessage("Failed to fetch file list."),
+        "uploadError": MessageLookupByLibrary.simpleMessage("Upload error."),
+        "downloadError":
+            MessageLookupByLibrary.simpleMessage("Download error."),
+        "deleteError":
+            MessageLookupByLibrary.simpleMessage("Error deleting file."),
+        "selectFile": MessageLookupByLibrary.simpleMessage("Select file."),
+        "fileSelected": MessageLookupByLibrary.simpleMessage("File selected."),
+        "fileNotFound": MessageLookupByLibrary.simpleMessage("File not found."),
+        "errorOccurred": MessageLookupByLibrary.simpleMessage(
+            "An error occurred, please try again."),
+        "fileViewer": MessageLookupByLibrary.simpleMessage("File Viewer")
       };
 }

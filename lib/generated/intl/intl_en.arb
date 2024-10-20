@@ -135,6 +135,26 @@
   "nextStep": "Next Step",
   "prompt": "Prompt",
   "successDialogTitle": "Success",
-  "passwordResetComplete": "Password reset successful"
+  "passwordResetComplete": "Password reset successful",
+    "noFiles": "No files uploaded yet.",
+    "uploadSuccess": "File uploaded successfully.",
+    "uploadFail": "File upload failed.",
+    "downloadSuccess": "File downloaded successfully, saved at: {localFilePath}",
+    "downloadFail": "File download failed.",
+    "deleteSuccess": "File deleted successfully.",
+    "deleteFail": "File deletion failed.",
+    "fetchFilesError": "Error fetching file list.",
+    "loginInfoNotFound": "Login information not found.",
+    "fetchFilesFail": "Failed to fetch file list.",
+    "uploadError": "Upload error.",
+    "downloadError": "Download error.",
+    "deleteError": "Error deleting file.",
+    "selectFile": "Select file.",
+    "fileSelected": "File selected.",
+    "fileNotFound": "File not found.",
+    "errorOccurred": "An error occurred, please try again.",
+    "fileViewer": "File Viewer"
+  
+  
 
 }

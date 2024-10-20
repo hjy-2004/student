@@ -136,6 +136,26 @@
     "nextStep": "下一步",
     "prompt": "提示",
     "successDialogTitle": "成功",
-    "passwordResetComplete": "密码重置成功"
+    "passwordResetComplete": "密码重置成功",
+      "noFiles": "空空如也，尚未上传任何文件。",
+      "uploadSuccess": "文件上传成功。",
+      "uploadFail": "文件上传失败。",
+      "downloadSuccess": "文件下载成功，保存在:{localFilePath} ",
+      "downloadFail": "文件下载失败。",
+      "deleteSuccess": "文件删除成功。",
+      "deleteFail": "文件删除失败。",
+      "fetchFilesError": "获取文件列表出错。",
+      "loginInfoNotFound": "未找到登录信息。",
+      "fetchFilesFail": "获取文件列表失败。",
+      "uploadError": "上传出错。",
+      "downloadError": "下载出错。",
+      "deleteError": "删除文件出错。",
+      "selectFile": "选择文件。",
+      "fileSelected": "已选择文件。",
+      "fileNotFound": "文件未找到。",
+      "errorOccurred": "发生错误，请重试。",
+      "fileViewer": "文件查看器"
+    
+    
   }
   

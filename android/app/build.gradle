@@ -37,6 +37,8 @@ android {
         keyAlias 'myapp_key'  // 密钥别名
         keyPassword '20041009'  // 密钥密码
     }
+
+    
 }
 
 
@@ -49,6 +51,8 @@ android {
         }
     
     }
+
+   
 
 
 }

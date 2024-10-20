@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_localizations/flutter_localizations.dart'; // 导入
-// ignore: unused_import
-import 'package:intl/intl.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'file_viewer_page.dart'; // 引入文件查看页面
 import 'generated/intl/app_localizations.dart';
 import 'home_page.dart';
 import 'login_page.dart';
@@ -19,26 +20,29 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static const platform = MethodChannel('file_viewer');
+  static final GlobalKey<NavigatorState> navigatorKey =
+      GlobalKey<NavigatorState>();
+
   @override
   Widget build(BuildContext context) {
-    return Consumer<LocaleNotifier>(
-      builder: (context, localeNotifier, child) {
-        return MaterialApp(
-          home: SplashScreen(),
-          locale: localeNotifier.currentLocale, // 设置当前的 locale
-          localizationsDelegates: [
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-            AppLocalizations.delegate, // 添加你的本地化委托
-          ],
-          supportedLocales: [
-            Locale('en', ''), // 支持英文
-            Locale('zh', ''), // 支持中文
-          ], // 确保支持的语言列表与 S 一致
-        );
-      },
-    );
+    return Consumer<LocaleNotifier>(builder: (context, localeNotifier, child) {
+      return MaterialApp(
+        navigatorKey: navigatorKey, // 设置全局导航键
+        home: SplashScreen(),
+        locale: localeNotifier.currentLocale,
+        localizationsDelegates: [
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+          AppLocalizations.delegate,
+        ],
+        supportedLocales: [
+          Locale('en', ''),
+          Locale('zh', ''),
+        ],
+      );
+    });
   }
 }
 
@@ -51,20 +55,34 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
+    _requestPermissions();
     _navigateToNextScreen();
+    _setupMethodChannel(); // 在此处设置 MethodChannel
+  }
+
+  Future<void> _requestPermissions() async {
+    // 请求存储权限
+    var status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
+    // 你可以在这里检查权限是否被授予
+    if (await Permission.storage.isGranted) {
+      print("存储权限已被授予");
+    } else {
+      print("存储权限被拒绝");
+    }
   }
 
   Future<void> _navigateToNextScreen() async {
-    // 模拟延迟1秒
     await Future.delayed(Duration(seconds: 1));
-
     bool isLoggedIn = await _checkLoginStatus();
     if (isLoggedIn) {
-      Navigator.of(context).pushReplacement(
+      MyApp.navigatorKey.currentState?.pushReplacement(
         MaterialPageRoute(builder: (context) => HomePage()),
       );
     } else {
-      Navigator.of(context).pushReplacement(
+      MyApp.navigatorKey.currentState?.pushReplacement(
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
     }
@@ -77,20 +95,29 @@ class _SplashScreenState extends State<SplashScreen> {
     return username != null && password != null;
   }
 
+  void _setupMethodChannel() {
+    MyApp.platform.setMethodCallHandler((call) async {
+      if (call.method == "openFile") {
+        String filePath = call.arguments;
+        print("Attempting to open file: $filePath");
+        MyApp.navigatorKey.currentState?.push(
+          MaterialPageRoute(
+            builder: (context) => FileViewerPage(filePath: filePath),
+          ),
+        );
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.blue, // 启动页面背景颜色
+      backgroundColor: Colors.blue,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // 这里可以添加你的启动页面内容，例如 logo 或者图片
-            Icon(
-              Icons.school,
-              size: 100,
-              color: Colors.white,
-            ),
+            Icon(Icons.school, size: 100, color: Colors.white),
             SizedBox(height: 20),
             Text(
               '学生成绩管理系统',
@@ -115,9 +142,5 @@ class LocaleNotifier extends ChangeNotifier {
   void setLocale(Locale newLocale) {
     _currentLocale = newLocale;
     notifyListeners();
-    print('Locale changed to: ${newLocale.languageCode}'); // Debugging
-
-    Intl.defaultLocale = newLocale.languageCode;
-    print('Locale changed to: ${newLocale.languageCode}');
   }
 }
