@@ -1,0 +1,15 @@
+push graphic-context "Layer_1"
+compliance "SVG"
+fill "black"
+fill-opacity 1
+stroke "none"
+stroke-width 1
+stroke-opacity 1
+fill-rule nonzero
+encoding "UTF-8"
+viewbox 0 0 18 18
+affine 1 0 0 1 0 0
+push graphic-context "image0"
+image Over 0,0 18,18 "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAMAAABhEH5lAAAAIGNIUk0AAHomAACAhAAA+gAAAIDo AAB1MAAA6mAAADqYAAAXcJy6UTwAAABUUExURQAAAP+uAP+uAP+uAP+uAP+tAP+uAP+sAP+uAP+u AP+vAP+uAP+tAP+uAP+uAP+uAP+vAP+/AP+fAP+uAP+uAP+uAP+tAP+uAP+AAP+tAP+uAP///5lD LwYAAAAadFJOUwBIpN/7pEwox+uohKzP8+NgBAjn99ccowRg7uX4lwAAAAFiS0dEGwJg1KQAAAAH dElNRQfoChUEEBvcGv8iAAAAlElEQVQY022QbQ+DIAyEW0ClvCvoXP//D93AaSDZfWqeXJq7A6hC IZWS0wy3Fs1krHXEfrkIhpjWemwpF2yesh+3/9hD9fn8kC+LGmDmBJ0SI0y09WilF0gHg4wEZUdk 1T8kzYicBEFnTzYSgPweQ3yL6thHzb4WCn2h0opjyanFPVMM+BvHMzlrDbFenhdzm1Bclg8L9wYP UFcJngAAACV0RVh0ZGF0ZTpjcmVhdGUAMjAyNC0xMC0yMVQwNDoxNjoyNiswMDowMGLSOLQAAAAl dEVYdGRhdGU6bW9kaWZ5ADIwMjQtMTAtMjFUMDQ6MTY6MjYrMDA6MDATj4AIAAAAKHRFWHRkYXRl OnRpbWVzdGFtcAAyMDI0LTEwLTIxVDA0OjE2OjI3KzAwOjAw4u2qYwAAAABJRU5ErkJggg=="
+pop graphic-context
+pop graphic-context
