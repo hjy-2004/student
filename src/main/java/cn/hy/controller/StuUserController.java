@@ -39,7 +39,7 @@ public class StuUserController {
     }
 
     @GetMapping("/{uid}")
-    public ResponseEntity<StuUser> getStudentById(@PathVariable int uid) {
+    public ResponseEntity<StuUser> getStudentById(@PathVariable Long uid) {
         StuUser student = stuUserService.getStudentById(uid);
         if (student == null) {
             return ResponseEntity.notFound().build();
@@ -48,7 +48,7 @@ public class StuUserController {
     }
 
     @PutMapping("/{uid}")
-    public ResponseEntity<?> updateStudent(@PathVariable int uid, @RequestBody StuUser studentDetails) {
+    public ResponseEntity<?> updateStudent(@PathVariable Long uid, @RequestBody StuUser studentDetails) {
         try {
             StuUser updatedStudent = stuUserService.updateStudent(uid, studentDetails);
             if (updatedStudent == null) {
@@ -83,7 +83,7 @@ public class StuUserController {
 
 
     @DeleteMapping("/{uid}")
-    public ResponseEntity<?> deleteStudent(@PathVariable int uid) {
+    public ResponseEntity<?> deleteStudent(@PathVariable Long uid) {
         try {
             stuUserService.deleteStudent(uid);
             return ResponseEntity.ok().build();
@@ -114,7 +114,7 @@ public class StuUserController {
     }
 
     @PutMapping("/admin/{uid}")
-    public StuUser updateStuUser(@PathVariable int uid, @RequestBody StuUser stuUser) {
+    public StuUser updateStuUser(@PathVariable Long uid, @RequestBody StuUser stuUser) {
         stuUser.setUid(uid);
         return stuUserRepository.save(stuUser);
     }
@@ -150,7 +150,7 @@ public class StuUserController {
 //    }
 
     @PutMapping("/update-by-uid/{uid}")
-    public ResponseEntity<?> updateStudentByUid(@PathVariable int uid, @RequestBody StuUser studentDetails) {
+    public ResponseEntity<?> updateStudentByUid(@PathVariable Long uid, @RequestBody StuUser studentDetails) {
         try {
             StuUser existingStudent = stuUserService.updateStudent(uid, studentDetails);
             if (existingStudent == null) {

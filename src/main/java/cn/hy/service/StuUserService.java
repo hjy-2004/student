@@ -23,7 +23,7 @@ public class StuUserService {
         return stuUserRepository.findAll();
     }
 
-    public StuUser getStudentById(int uid) {
+    public StuUser getStudentById(Long uid) {
         return stuUserRepository.findById(uid).orElse(null);
     }
 
@@ -36,7 +36,7 @@ public class StuUserService {
         return userRepository.existsByUsername(username); // 直接使用 repository 方法检查是否存在
     }
 
-    public StuUser  updateStudent(int uid, StuUser student) {
+    public StuUser  updateStudent(Long uid, StuUser student) {
         StuUser existingStudent = stuUserRepository.findById(uid).orElse(null);
         if (existingStudent != null) {
             existingStudent.setStuName(student.getStuName());
@@ -53,7 +53,7 @@ public class StuUserService {
         return stuUserRepository.save(stuUser);
     }
 
-    public void deleteStudent(int uid) {
+    public void deleteStudent(Long uid) {
         stuUserRepository.deleteById(uid);
     }
 

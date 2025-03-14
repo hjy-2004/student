@@ -11,7 +11,7 @@ import java.util.Optional;
 
 
 @Repository
-public interface StuUserRepository extends JpaRepository<StuUser, Integer> {
+public interface StuUserRepository extends JpaRepository<StuUser, Long> {
 
 
     List<StuUser> findByUsername(String username);

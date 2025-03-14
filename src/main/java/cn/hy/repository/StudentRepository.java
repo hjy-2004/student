@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface StudentRepository extends JpaRepository<StuUser, Long> {
@@ -17,6 +18,9 @@ public interface StudentRepository extends JpaRepository<StuUser, Long> {
             "FROM User u JOIN stu_user s ON u.username = s.username "
             , nativeQuery = true)
     List<Object[]> getStudentInfoByUsername();
+
+    // 添加根据学号查询的方法
+    Optional<StuUser> findByUsername(String username);
 
 
 }

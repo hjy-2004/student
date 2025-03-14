@@ -7,7 +7,7 @@ import javax.persistence.*;
 public class StuUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int uid; // 编号
+    private Long uid; // 编号
 
     @Column(name = "stu_class")
     private String stuClass; // 学生所属班级
@@ -30,7 +30,7 @@ public class StuUser {
 
     public StuUser() {}
 
-    public StuUser(int uid, String stuClass, String stuName, String totalCredits, String username, String email, String password, Teacher teacher) {
+    public StuUser(Long uid, String stuClass, String stuName, String totalCredits, String username, String email, String password, Teacher teacher) {
         this.uid = uid;
         this.stuClass = stuClass;
         this.stuName = stuName;
@@ -43,11 +43,11 @@ public class StuUser {
 
     // Getters and Setters
 
-    public int getUid() {
+    public Long getUid() {
         return uid;
     }
 
-    public void setUid(int uid) {
+    public void setUid(Long uid) {
         this.uid = uid;
     }
 
