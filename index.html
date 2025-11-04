@@ -167,11 +167,12 @@
     <div class="container" id="heartContainer"></div>
     
     <!-- 背景音乐 -->
-    <!-- 使用说明：取消下面 audio 标签中 source 的注释，并设置您的音乐文件路径 -->
-    <audio id="backgroundMusic" loop preload="auto">
-        <!-- 取消注释并设置您的音乐文件路径，例如：<source src="music.mp3" type="audio/mpeg"> -->
-        <source src="一个人想着一个人 说唱版-戴羽彤,承桓.flac" type="audio/flac">
-        <!-- <source src="music.ogg" type="audio/ogg"> -->
+    <!-- 使用说明：将 FLAC 文件转换为 MP3 格式（小于 25MB）后，放在同一目录下 -->
+    <audio id="backgroundMusic" loop preload="auto" autoplay>
+        <!-- 优先使用 MP3 格式（压缩后，推荐） -->
+        <source src="一个人想着一个人 说唱版-戴羽彤,承桓.mp3" type="audio/mpeg">
+        <!-- 备选：FLAC 格式（如果文件小于 25MB 且未压缩） -->
+        <!-- <source src="一个人想着一个人 说唱版-戴羽彤,承桓.flac" type="audio/flac"> -->
         您的浏览器不支持音频播放。
     </audio>
 
@@ -561,32 +562,45 @@
             const hasSourceSrc = sourceElement && sourceElement.src && sourceElement.src.trim() !== '';
             
             if (hasAudioSource || hasSourceSrc) {
-                // 尝试自动播放
-                const playPromise = audio.play();
+                // 尝试自动播放音乐
+                const tryPlay = () => {
+                    const playPromise = audio.play();
+                    
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // 自动播放成功
+                            console.log('音乐自动播放成功');
+                        }).catch(error => {
+                            // 自动播放被阻止（浏览器安全策略）
+                            console.log('自动播放被阻止，等待用户交互...');
+                            // 添加点击事件监听作为后备方案
+                            const playOnInteraction = () => {
+                                audio.play().then(() => {
+                                    console.log('音乐开始播放');
+                                    // 移除事件监听器
+                                    document.removeEventListener('click', playOnInteraction);
+                                    document.removeEventListener('touchstart', playOnInteraction);
+                                    document.removeEventListener('keydown', playOnInteraction);
+                                }).catch(err => {
+                                    console.log('播放失败:', err);
+                                });
+                            };
+                            
+                            // 监听多种用户交互事件（点击、触摸、键盘）
+                            document.addEventListener('click', playOnInteraction, { once: true });
+                            document.addEventListener('touchstart', playOnInteraction, { once: true });
+                            document.addEventListener('keydown', playOnInteraction, { once: true });
+                        });
+                    }
+                };
                 
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        // 播放成功
-                        console.log('音乐开始播放');
-                    }).catch(error => {
-                        // 自动播放被阻止，需要用户交互
-                        console.log('自动播放被阻止，等待用户交互');
-                        // 添加点击事件监听，用户点击页面后播放
-                        const playOnInteraction = () => {
-                            audio.play().then(() => {
-                                console.log('音乐开始播放');
-                                // 移除事件监听器，避免重复绑定
-                                document.removeEventListener('click', playOnInteraction);
-                                document.removeEventListener('touchstart', playOnInteraction);
-                            }).catch(err => {
-                                console.log('播放失败:', err);
-                            });
-                        };
-                        
-                        // 监听点击和触摸事件
-                        document.addEventListener('click', playOnInteraction, { once: true });
-                        document.addEventListener('touchstart', playOnInteraction, { once: true });
-                    });
+                // 如果音频已准备好，立即播放；否则等待加载完成
+                if (audio.readyState >= 2) { // HAVE_CURRENT_DATA 或更高
+                    tryPlay();
+                } else {
+                    audio.addEventListener('canplay', tryPlay, { once: true });
+                    // 如果 canplay 事件未触发，在加载完成后也尝试播放
+                    audio.addEventListener('loadeddata', tryPlay, { once: true });
                 }
             } else {
                 console.log('请设置音频文件路径');
