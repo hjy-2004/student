@@ -155,11 +155,25 @@
             z-index: 1000;
             box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
+
+        /* 隐藏音频元素 */
+        #backgroundMusic {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="particles-container" id="particlesContainer"></div>
     <div class="container" id="heartContainer"></div>
+    
+    <!-- 背景音乐 -->
+    <!-- 使用说明：取消下面 audio 标签中 source 的注释，并设置您的音乐文件路径 -->
+    <audio id="backgroundMusic" loop preload="auto">
+        <!-- 取消注释并设置您的音乐文件路径，例如：<source src="music.mp3" type="audio/mpeg"> -->
+        <source src="一个人想着一个人 说唱版-戴羽彤,承桓.flac" type="audio/flac">
+        <!-- <source src="music.ogg" type="audio/ogg"> -->
+        您的浏览器不支持音频播放。
+    </audio>
 
     <script>
         // 关心的话语数组
@@ -524,6 +538,59 @@
             
             // 初始化背景粒子（只初始化一次）
             initParticles();
+            
+            // 自动播放背景音乐
+            playBackgroundMusic();
+        }
+
+        // 播放背景音乐
+        function playBackgroundMusic() {
+            const audio = document.getElementById('backgroundMusic');
+            
+            // ========== 音频文件设置 ==========
+            // 请将您的音乐文件放在项目目录中，然后取消下面的注释并设置正确的路径
+            // 例如：audio.src = 'music.mp3'; 或 audio.src = 'sounds/background.mp3';
+            // 支持的格式：MP3, OGG, WAV 等
+            
+            // 取消下面这行注释并设置您的音乐文件路径：
+            // audio.src = 'music.mp3';
+            
+            // 检查音频源是否已设置
+            const hasAudioSource = audio.src && audio.src.trim() !== '';
+            const sourceElement = audio.querySelector('source');
+            const hasSourceSrc = sourceElement && sourceElement.src && sourceElement.src.trim() !== '';
+            
+            if (hasAudioSource || hasSourceSrc) {
+                // 尝试自动播放
+                const playPromise = audio.play();
+                
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        // 播放成功
+                        console.log('音乐开始播放');
+                    }).catch(error => {
+                        // 自动播放被阻止，需要用户交互
+                        console.log('自动播放被阻止，等待用户交互');
+                        // 添加点击事件监听，用户点击页面后播放
+                        const playOnInteraction = () => {
+                            audio.play().then(() => {
+                                console.log('音乐开始播放');
+                                // 移除事件监听器，避免重复绑定
+                                document.removeEventListener('click', playOnInteraction);
+                                document.removeEventListener('touchstart', playOnInteraction);
+                            }).catch(err => {
+                                console.log('播放失败:', err);
+                            });
+                        };
+                        
+                        // 监听点击和触摸事件
+                        document.addEventListener('click', playOnInteraction, { once: true });
+                        document.addEventListener('touchstart', playOnInteraction, { once: true });
+                    });
+                }
+            } else {
+                console.log('请设置音频文件路径');
+            }
         }
 
         // 防抖函数
