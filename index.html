@@ -24,6 +24,81 @@
             padding: 10px;
         }
 
+        /* 启动界面 */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #ffeef2 0%, #ffe0e6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease, visibility 0.5s ease;
+        }
+
+        .start-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        .start-button {
+            text-align: center;
+            cursor: pointer;
+            padding: 30px 60px;
+            background: linear-gradient(135deg, #ff6b9d 0%, #ff1744 100%);
+            color: white;
+            border-radius: 50px;
+            font-size: clamp(24px, 5vw, 36px);
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(255, 23, 68, 0.4);
+            transition: all 0.3s ease;
+            user-select: none;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .start-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .start-button:hover::before {
+            left: 100%;
+        }
+
+        .start-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 40px rgba(255, 23, 68, 0.6);
+        }
+
+        .start-button:active {
+            transform: scale(0.98);
+        }
+
+        .start-text {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .start-hint {
+            display: block;
+            font-size: clamp(14px, 2.5vw, 20px);
+            opacity: 0.9;
+            font-weight: normal;
+            margin-top: 15px;
+        }
+
         /* 背景爱心粒子容器 */
         .particles-container {
             position: fixed;
@@ -34,6 +109,12 @@
             pointer-events: none;
             z-index: 1;
             overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .particles-container.active {
+            opacity: 1;
         }
 
         /* 爱心粒子样式 */
@@ -72,6 +153,12 @@
             min-width: 300px;
             min-height: 300px;
             z-index: 10;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .container.active {
+            opacity: 1;
         }
 
         .message-box {
@@ -163,12 +250,20 @@
     </style>
 </head>
 <body>
+    <!-- 启动界面 -->
+    <div class="start-screen" id="startScreen">
+        <div class="start-button" id="startButton">
+            <span class="start-text">❤ 点击开始 ❤</span>
+            <span class="start-hint">开启浪漫之旅</span>
+        </div>
+    </div>
+    
     <div class="particles-container" id="particlesContainer"></div>
     <div class="container" id="heartContainer"></div>
     
     <!-- 背景音乐 -->
     <!-- 使用说明：将 FLAC 文件转换为 MP3 格式（小于 25MB）后，放在同一目录下 -->
-    <audio id="backgroundMusic" loop preload="auto" autoplay>
+    <audio id="backgroundMusic" loop preload="auto">
         <!-- 优先使用 MP3 格式（压缩后，推荐） -->
         <source src="一个人想着一个人 说唱版-戴羽彤,承桓.mp3" type="audio/mpeg">
         <!-- 备选：FLAC 格式（如果文件小于 25MB 且未压缩） -->
@@ -539,12 +634,9 @@
             
             // 初始化背景粒子（只初始化一次）
             initParticles();
-            
-            // 自动播放背景音乐
-            playBackgroundMusic();
         }
 
-        // 播放背景音乐
+        // 播放背景音乐（在用户交互后调用）
         function playBackgroundMusic() {
             const audio = document.getElementById('backgroundMusic');
             
@@ -562,45 +654,15 @@
             const hasSourceSrc = sourceElement && sourceElement.src && sourceElement.src.trim() !== '';
             
             if (hasAudioSource || hasSourceSrc) {
-                // 尝试自动播放音乐
-                const tryPlay = () => {
-                    const playPromise = audio.play();
-                    
-                    if (playPromise !== undefined) {
-                        playPromise.then(() => {
-                            // 自动播放成功
-                            console.log('音乐自动播放成功');
-                        }).catch(error => {
-                            // 自动播放被阻止（浏览器安全策略）
-                            console.log('自动播放被阻止，等待用户交互...');
-                            // 添加点击事件监听作为后备方案
-                            const playOnInteraction = () => {
-                                audio.play().then(() => {
-                                    console.log('音乐开始播放');
-                                    // 移除事件监听器
-                                    document.removeEventListener('click', playOnInteraction);
-                                    document.removeEventListener('touchstart', playOnInteraction);
-                                    document.removeEventListener('keydown', playOnInteraction);
-                                }).catch(err => {
-                                    console.log('播放失败:', err);
-                                });
-                            };
-                            
-                            // 监听多种用户交互事件（点击、触摸、键盘）
-                            document.addEventListener('click', playOnInteraction, { once: true });
-                            document.addEventListener('touchstart', playOnInteraction, { once: true });
-                            document.addEventListener('keydown', playOnInteraction, { once: true });
-                        });
-                    }
-                };
+                // 用户已经点击了启动按钮，所以可以直接播放
+                const playPromise = audio.play();
                 
-                // 如果音频已准备好，立即播放；否则等待加载完成
-                if (audio.readyState >= 2) { // HAVE_CURRENT_DATA 或更高
-                    tryPlay();
-                } else {
-                    audio.addEventListener('canplay', tryPlay, { once: true });
-                    // 如果 canplay 事件未触发，在加载完成后也尝试播放
-                    audio.addEventListener('loadeddata', tryPlay, { once: true });
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        console.log('音乐开始播放');
+                    }).catch(error => {
+                        console.log('播放失败:', error);
+                    });
                 }
             } else {
                 console.log('请设置音频文件路径');
@@ -625,15 +687,52 @@
             init();
         }, 300);
 
-        // 页面加载完成后初始化
-        window.addEventListener('load', init);
+        // 启动标志
+        let isStarted = false;
+
+        // 启动函数：点击后开始播放音乐和绘制爱心
+        function startExperience() {
+            if (isStarted) return;
+            isStarted = true;
+
+            // 隐藏启动界面
+            const startScreen = document.getElementById('startScreen');
+            startScreen.classList.add('hidden');
+
+            // 显示爱心容器和粒子
+            const container = document.getElementById('heartContainer');
+            const particlesContainer = document.getElementById('particlesContainer');
+            container.classList.add('active');
+            particlesContainer.classList.add('active');
+
+            // 播放音乐并初始化爱心
+            playBackgroundMusic();
+            init();
+        }
+
+        // 绑定启动按钮点击事件
+        const startButton = document.getElementById('startButton');
+        startButton.addEventListener('click', startExperience);
+        startButton.addEventListener('touchstart', startExperience, { passive: true });
+
+        // 页面加载完成后不自动初始化，等待用户点击
+        window.addEventListener('load', () => {
+            // 页面加载完成，但不自动初始化
+            console.log('页面加载完成，等待用户点击开始...');
+        });
         
-        // 监听窗口大小改变
-        window.addEventListener('resize', resizeHandler);
+        // 监听窗口大小改变（仅在已启动时）
+        window.addEventListener('resize', () => {
+            if (isStarted) {
+                resizeHandler();
+            }
+        });
         
-        // 监听方向改变（移动设备）
+        // 监听方向改变（移动设备，仅在已启动时）
         window.addEventListener('orientationchange', () => {
-            setTimeout(init, 500);
+            if (isStarted) {
+                setTimeout(init, 500);
+            }
         });
     </script>
 </body>
