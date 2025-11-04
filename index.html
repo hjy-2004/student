@@ -1,745 +1,559 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>流星雨音乐播放</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>程序员的浪漫</title>
     <style>
-        body {
+        * {
             margin: 0;
-            overflow: hidden;
-            background-color: #000;
-            touch-action: manipulation;
-            font-family: Arial, sans-serif;
+            padding: 0;
+            box-sizing: border-box;
         }
 
-        canvas {
-            display: block;
-        }
-
-        #info {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5);
+        body {
+            background: linear-gradient(135deg, #ffeef2 0%, #ffe0e6 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow-x: hidden;
+            overflow-y: auto;
+            font-family: 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+            position: relative;
             padding: 10px;
-            border-radius: 5px;
-            font-size: 14px;
+        }
+
+        /* 背景爱心粒子容器 */
+        .particles-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
-            z-index: 100;
+            z-index: 1;
+            overflow: hidden;
         }
 
-        #score {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            color: white;
-            font-size: 24px;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            z-index: 100;
+        /* 爱心粒子样式 */
+        .heart-particle {
+            position: absolute;
+            font-size: 20px;
+            color: rgba(255, 105, 180, 0.6);
+            animation: floatUp linear infinite;
+            user-select: none;
         }
 
-        #music-control {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.7);
-            padding: 10px;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
+        /* 粒子飘动动画 */
+        @keyframes floatUp {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.6;
+            }
+            90% {
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(-100px) translateX(var(--drift)) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        .container {
+            position: relative;
+            width: 90vmin;
+            height: 90vmin;
+            max-width: 800px;
+            max-height: 800px;
+            min-width: 300px;
+            min-height: 300px;
+            z-index: 10;
+        }
+
+        .message-box {
+            position: absolute;
+            width: clamp(50px, 8vw, 80px);
+            height: clamp(50px, 8vw, 80px);
+            border-radius: 12px;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
-            z-index: 100;
-            border: 1px solid rgba(255, 255, 255, 0.3);
-        }
-
-        #music-control i {
-            font-size: 20px;
-        }
-
-        #music-info {
-            position: fixed;
-            bottom: 70px;
-            right: 20px;
-            color: white;
-            background-color: rgba(0, 0, 0, 0.5);
-            padding: 10px;
-            border-radius: 5px;
-            font-size: 12px;
-            max-width: 200px;
-            display: none;
-        }
-
-        #lyrics-container {
-            position: fixed;
-            bottom: 120px;
-            left: 0;
-            right: 0;
-            color: white;
             text-align: center;
-            z-index: 100;
-            pointer-events: auto;
-            /* 允许用户交互 */
-            max-height: 40vh;
-            overflow-y: auto;
-
-            /* 允许垂直滚动 */
-            /* 隐藏滚动条 */
-            &::-webkit-scrollbar {
-                display: none;
-            }
-
-            -ms-overflow-style: none;
-            /* IE和Edge */
-            scrollbar-width: none;
-            /* Firefox */
-        }
-
-        .lyrics-line {
-            font-size: 18px;
-            margin: 10px 0;
-            opacity: 0.6;
-            transition: all 0.3s ease;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-        }
-
-        .lyrics-line.active {
-            opacity: 1;
-            font-size: 22px;
+            font-size: clamp(10px, 1.5vw, 12px);
+            color: white;
             font-weight: bold;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            padding: clamp(4px, 1vw, 8px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+            opacity: 0;
+            transform: scale(0.3);
+            transition: opacity 0.4s ease, transform 0.4s ease;
+            word-wrap: break-word;
+            cursor: pointer;
+            z-index: 10;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            backdrop-filter: blur(2px);
         }
 
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            #info {
-                font-size: 12px;
-                bottom: 10px;
-                left: 10px;
+            .container {
+                width: 95vmin;
+                height: 95vmin;
+                min-width: 280px;
+                min-height: 280px;
             }
 
-            #score {
-                font-size: 18px;
-                top: 10px;
-                right: 10px;
+            .message-box {
+                width: clamp(45px, 10vw, 70px);
+                height: clamp(45px, 10vw, 70px);
+                font-size: clamp(9px, 2vw, 11px);
+                padding: clamp(3px, 1.5vw, 6px);
             }
 
-            #music-control {
-                bottom: 10px;
-                right: 10px;
-                width: 35px;
-                height: 35px;
+            .heart-particle {
+                font-size: clamp(15px, 4vw, 20px);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                width: 98vmin;
+                height: 98vmin;
+                min-width: 250px;
+                min-height: 250px;
             }
 
-            #music-control i {
-                font-size: 18px;
+            .message-box {
+                width: clamp(40px, 12vw, 60px);
+                height: clamp(40px, 12vw, 60px);
+                font-size: clamp(8px, 2.5vw, 10px);
+                padding: clamp(2px, 2vw, 5px);
+                border-radius: 8px;
             }
+        }
 
-            #music-info {
-                bottom: 55px;
-                right: 10px;
+        @media (max-height: 600px) {
+            .container {
+                height: 85vh;
+                width: 85vh;
+                max-height: 600px;
+                max-width: 600px;
             }
+        }
 
-            #lyrics-container {
-                bottom: 100px;
-            }
+        .message-box.show {
+            opacity: 1;
+            transform: scale(1);
+        }
 
-            .lyrics-line {
-                font-size: 16px;
-            }
-
-            .lyrics-line.active {
-                font-size: 18px;
-            }
+        .message-box:hover {
+            transform: scale(1.1);
+            z-index: 1000;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
         }
     </style>
-    <!-- 引入Font Awesome图标 -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
-
 <body>
-    <canvas id="starCanvas"></canvas>
-    <div id="info">点击或触摸屏幕创建流星<br>长按创建流星风暴</div>
-    <div id="score">流星: 0</div>
-    <div id="music-control" title="播放/暂停音乐">
-        <i class="fas fa-music"></i>
-    </div>
-    <div id="music-info">音乐加载中...</div>
-    <div id="lyrics-container"></div>
-
-    <!-- 音频元素 -->
-    <audio id="bgMusic" loop>
-        <source src="http://101.200.33.160/music/%E5%94%AF%E4%B8%80-G.E.M.%E9%82%93%E7%B4%AB%E6%A3%8B.mp3"
-            type="audio/mpeg">
-        您的浏览器不支持音频元素。
-    </audio>
+    <div class="particles-container" id="particlesContainer"></div>
+    <div class="container" id="heartContainer"></div>
 
     <script>
-        const canvas = document.getElementById('starCanvas');
-        const ctx = canvas.getContext('2d');
-        const infoDiv = document.getElementById('info');
-        const scoreDiv = document.getElementById('score');
-        const musicControl = document.getElementById('music-control');
-        const musicInfo = document.getElementById('music-info');
-        const lyricsContainer = document.getElementById('lyrics-container');
-        const bgMusic = document.getElementById('bgMusic');
+        // 关心的话语数组
+        const messages = [
+            "我想你了",
+            "记得保暖",
+            "多吃水果",
+            "多喝水",
+            "早点休息",
+            "注意身体",
+            "记得吃饭",
+            "不要太累",
+            "照顾好自己",
+            "想你",
+            "爱你",
+            "要开心",
+            "注意安全",
+            "记得想我",
+            "晚安",
+            "早安",
+            "今天也要加油",
+            "你很重要",
+            "我在想你",
+            "记得微笑",
+            "要健康",
+            "别熬夜",
+            "记得开心",
+            "你辛苦了",
+            "要快乐",
+            "记得添衣",
+            "记得带伞",
+            "累了就休息",
+            "别太拼了",
+            "我在等你",
+            "想抱抱你",
+            "要好好吃饭",
+            "按时作息",
+            "别着凉了",
+            "记得运动",
+            "保持好心情",
+            "你是最棒的",
+            "我永远支持你",
+            "记得放松",
+            "别忘记我",
+            "要好好休息",
+            "记得联系我",
+            "我一直在",
+            "你很珍贵",
+            "要对自己好",
+            "别太辛苦",
+            "记得想我哦",
+            "我心疼你",
+            "要照顾好自己",
+            "记得多休息",
+            "你很重要",
+            "我爱你",
+            "要幸福",
+            "记得开心点",
+            "别累坏了",
+            "我陪着你",
+            "记得保暖哦",
+            "要保重身体",
+            "记得按时吃饭",
+            "别太晚睡",
+            "记得想我",
+            "我在这里",
+            "要开开心心",
+            "记得多喝水",
+            "别太忙碌",
+            "记得放松心情",
+            "我永远爱你",
+            "要好好生活",
+            "记得照顾好自己",
+            "别太紧张",
+            "记得微笑面对",
+            "我会想你的",
+            "要平安健康",
+            "记得多休息",
+            "别太累着自己",
+            "记得开心每一天",
+            "我永远在你身边",
+            "要好好爱自己",
+            "记得保持好心情",
+            "别太压抑",
+            "记得分享快乐",
+            "我会一直等你",
+            "要对自己温柔",
+            "记得好好生活",
+            "别太焦虑",
+            "记得享受当下",
+            "我会陪着你"
+        ];
 
-        // 音乐相关变量
-        let musicPlaying = false;
-        let musicInitialized = false;
-
-        let filteredLyrics; // 全局声明
-        const currentTrack = {
-            name: "唯一 - G.E.M.邓紫棋",
-            url: "http://101.200.33.160/music/%E5%94%AF%E4%B8%80-G.E.M.%E9%82%93%E7%B4%AB%E6%A3%8B.mp3"
-        };
-
-        // 您的LRC歌词数据
-        const lrcText = `[ar:G.E.M. 邓紫棋]
-[ti:唯一]
-[by:]
-[al:T.I.M.E.]
-[offset:0]
-[00:00.000]G.E.M. 邓紫棋 - 唯一
-[00:02.173]作词：告五人、云安
-[00:02.892]作曲：告五人、云安
-[00:03.224]改编词曲：G.E.M. 邓紫棋
-[00:03.633]制作人：G.E.M. 邓紫棋、T-Ma
-[00:09.940]编曲：G.E.M. 邓紫棋、T-Ma
-[00:15.272]你真的懂唯一的定义
-[00:21.136]并不简单如呼吸
-[00:28.448]你真的希望你能厘清
-[00:34.440]若没交心怎么说明
-[00:40.243]我真的爱你 句句不轻易
-[00:53.820]眼神中飘移
-[00:59.564]总是在关键时刻清楚洞悉
-[01:07.372]你的不坚定 配合我颠沛流离
-[01:20.258]死去中清醒 明白你背着我聪明
-[01:48.205]那些我 想说的 没说的 话
-[01:54.709]有时我 怀疑呢 只是我 傻瓜
-[02:01.453]但如果真的爱 不会算计
-[02:04.869]爱是不嫉妒 不张狂 不求自己
-[02:08.141]无关你的回应 永不止息
-[02:12.849]你知道
-[02:13.609]我真的爱你 没人能比拟
-[02:26.897]眼神没肯定
-[02:32.754]总是在关键时刻清楚洞悉
-[02:40.273]你的不坚定 配合我颠沛流离
-[02:53.523]死去中清醒 明白你背着我聪明
-[03:06.123]我知道
-[03:06.987]爱本质无异 是因为人多得拥挤
-[03:20.307]你不想证明 证明我是你唯一
-[03:32.851]证明我是你唯一
-[03:38.192]混音：Claudia Koh
-[03:39.144]母带：T-Ma马敬恒
-[03:40.653]OP：更漂亮音乐工作室
-[03:42.705]SP：相信音乐国际股份有限公司`;
-
-        // 修复后的LRC解析器
-        function parseLRC(lrcText) {
-            const lines = lrcText.split('\n');
-            const result = [];
-            let offset = 0;
-
-            // 提取offset值（使用正确的方括号）
-            const offsetMatch = lrcText.match(/\[offset:([+-]?\d+)\]/i);
-            if (offsetMatch) {
-                offset = parseInt(offsetMatch[1]) / 1000; // 转换为秒
-            }
-
-            // 使用正确的方括号匹配时间标签 [mm:ss.xx]
-            const timeRegex = /\[(\d{2}):(\d{2})\.(\d{2,3})\]/g;
-
-            for (const line of lines) {
-                // 跳过空行和元数据行
-                if (!line.trim() || line.startsWith('[ar:') || line.startsWith('[ti:') ||
-                    line.startsWith('[al:') || line.startsWith('[by:') ||
-                    line.startsWith('[offset:') || line.startsWith('[ve:')) {
-                    continue;
-                }
-
-                // 提取所有时间标签和歌词文本
-                const matches = [...line.matchAll(timeRegex)];
-                const text = line.replace(timeRegex, '').trim();
-
-                if (matches.length > 0 && text) {
-                    for (const match of matches) {
-                        const minutes = parseInt(match[1]);
-                        const seconds = parseInt(match[2]);
-                        const milliseconds = parseInt(match[3].length === 2 ? match[3] + '0' : match[3]);
-
-                        let time = minutes * 60 + seconds + milliseconds / 1000;
-                        time += offset;
-                        time = Math.max(0, time);
-
-                        result.push({ time, text });
-                    }
-                }
-            }
-
-            result.sort((a, b) => a.time - b.time);
-            return result;
+        // 生成随机颜色（更鲜明的颜色，与淡粉色背景形成对比）
+        function getRandomColor() {
+            const colors = [
+                '#ff1744', '#e91e63', '#c2185b', '#ad1457',
+                '#ff4081', '#f50057', '#ec407a', '#d81b60',
+                '#ff6ec7', '#ff1493', '#ff69b4', '#ff006e',
+                '#d63384', '#dc3545', '#e83e8c', '#c2185b',
+                '#ff1744', '#f50057', '#e91e63', '#c2185b',
+                '#ff4081', '#ff6ec7', '#ff1493', '#ff006e'
+            ];
+            return colors[Math.floor(Math.random() * colors.length)];
         }
 
-        // 解析LRC歌词
-        const lyrics = parseLRC(lrcText);
-
-        // 初始化歌词显示 - 过滤掉非歌词内容
-        function initLyrics() {
-            lyricsContainer.innerHTML = '';
-            // 过滤歌词
-            filteredLyrics = lyrics.filter(line =>
-                !line.text.includes("作词：") &&
-                !line.text.includes("作曲：") &&
-                !line.text.includes("编曲：") &&
-                !line.text.includes("制作人：") &&
-                !line.text.includes("混音：") &&
-                !line.text.includes("母带：") &&
-                !line.text.includes("OP：") &&
-                !line.text.includes("SP：") &&
-                !line.text.match(/G\.E\.M\. 邓紫棋 - 唯一/)
-            );
-            // 创建歌词 DOM 元素
-            filteredLyrics.forEach((line, index) => {
-                const div = document.createElement('div');
-                div.className = 'lyrics-line';
-                div.textContent = line.text;
-                div.dataset.time = line.time;
-                lyricsContainer.appendChild(div);
-            });
-        }
-
-        // 更新当前播放的歌词 - 增强版
-        function updateLyrics(currentTime) {
-            const lines = document.querySelectorAll('.lyrics-line');
-            let activeLineIndex = -1;
-
-            // 使用过滤后的歌词数组
-            for (let i = 0; i < filteredLyrics.length; i++) {
-                if (currentTime >= filteredLyrics[i].time) {
-                    if (i === filteredLyrics.length - 1 ||
-                        currentTime < filteredLyrics[i + 1]?.time) {
-                        activeLineIndex = i;
-                    }
-                } else {
-                    break;
-                }
-            }
-
-            // 更新高亮
-            lines.forEach((line, index) => {
-                line.classList.remove('active');
-                if (index === activeLineIndex) {
-                    line.classList.add('active');
-                }
-            });
-
-            // 只有未手动滚动时才自动滚动
-            if (!isManualScrolling) {
-                const line = lines[activeLineIndex];
-                if (line) {
-                    const containerHeight = lyricsContainer.clientHeight;
-                    const lineHeight = line.clientHeight;
-                    const scrollTo = line.offsetTop - (containerHeight / 2) + (lineHeight / 2);
-                    lyricsContainer.scrollTo({ top: scrollTo, behavior: 'smooth' });
-                }
-            }
-        }
-
-        // 响应式设置画布大小
-        function resizeCanvas() {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-
-            // 调整小星星数量基于屏幕大小
-            numStars = Math.floor((canvas.width * canvas.height) / 1000);
-
-            // 重置星星数组
-            stars.length = 0;
-            for (let i = 0; i < numStars; i++) {
-                stars.push(createStar());
-            }
-        }
-
-        let numStars = Math.floor((window.innerWidth * window.innerHeight) / 1000);
-        const stars = [];
-        const shootingStars = [];
-        let score = 0;
-        let longPressTimer;
-        let isLongPress = false;
-        let touchStartTime = 0;
-
-        // 创建静态星星
-        function createStar() {
+        // 获取容器实际尺寸
+        function getContainerSize() {
+            const container = document.getElementById('heartContainer');
+            const rect = container.getBoundingClientRect();
             return {
-                x: Math.random() * canvas.width,
-                y: Math.random() * canvas.height,
-                radius: Math.random() * 1.5,
-                opacity: Math.random(),
-                blinkSpeed: Math.random() * 0.02 + 0.005,
-                blinkDirection: Math.random() > 0.5 ? 1 : -1
+                width: rect.width,
+                height: rect.height
             };
         }
 
-        // 初始化星星
-        for (let i = 0; i < numStars; i++) {
-            stars.push(createStar());
+        // 爱心参数方程生成点
+        function generateHeartPoints(numPoints = 100) {
+            const points = [];
+            const size = getContainerSize();
+            const containerWidth = size.width;
+            const containerHeight = size.height;
+            const centerX = containerWidth / 2;
+            const centerY = containerHeight / 2 + (containerHeight * 0.06); // 稍微下移，让爱心在容器中心偏下
+            
+            // 先计算爱心方程的实际范围，以确定合适的缩放比例
+            let minX = Infinity, maxX = -Infinity;
+            let minY = Infinity, maxY = -Infinity;
+            
+            // 采样更多点来确定范围
+            for (let i = 0; i < 1000; i++) {
+                const t = (i / 1000) * 2 * Math.PI;
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                
+                minX = Math.min(minX, x);
+                maxX = Math.max(maxX, x);
+                minY = Math.min(minY, y);
+                maxY = Math.max(maxY, y);
+            }
+            
+            // 计算爱心方程的实际宽度和高度
+            const heartWidth = maxX - minX;
+            const heartHeight = maxY - minY;
+            
+            // 根据容器大小计算合适的缩放比例（留出边距）
+            const margin = Math.min(containerWidth, containerHeight) * 0.12; // 响应式边距
+            const availableWidth = containerWidth - margin * 2;
+            const availableHeight = containerHeight - margin * 2;
+            
+            const scaleX = availableWidth / heartWidth;
+            const scaleY = availableHeight / heartHeight;
+            const scale = Math.min(scaleX, scaleY); // 使用较小的缩放比例保持比例
+            
+            // 生成爱心路径上的点
+            for (let i = 0; i < numPoints; i++) {
+                const t = (i / numPoints) * 2 * Math.PI;
+                // 爱心参数方程
+                const x = 16 * Math.pow(Math.sin(t), 3);
+                const y = -(13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t));
+                
+                // 转换坐标到画布中心（不进行 clamp，保持爱心形状）
+                const canvasX = centerX + x * scale;
+                const canvasY = centerY + y * scale;
+                
+                points.push({ x: canvasX, y: canvasY });
+            }
+            
+            return points;
         }
 
-        function drawStars() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 绘制闪烁的星星
-            ctx.fillStyle = 'white';
-            for (let star of stars) {
-                // 更新星星闪烁效果
-                star.opacity += star.blinkSpeed * star.blinkDirection;
-                if (star.opacity <= 0.1 || star.opacity >= 1) {
-                    star.blinkDirection *= -1;
-                }
-
-                ctx.globalAlpha = star.opacity;
-                ctx.beginPath();
-                ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-                ctx.fill();
-            }
-
-            // 绘制流星
-            for (let i = shootingStars.length - 1; i >= 0; i--) {
-                const star = shootingStars[i];
-
-                // 创建流星尾迹渐变
-                const gradient = ctx.createLinearGradient(
-                    star.x, star.y,
-                    star.x - star.length, star.y + star.length
-                );
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${star.opacity})`);
-                gradient.addColorStop(1, `rgba(255, 255, 255, 0)`);
-
-                ctx.strokeStyle = gradient;
-                ctx.lineWidth = star.width;
-                ctx.beginPath();
-                ctx.moveTo(star.x, star.y);
-                ctx.lineTo(star.x - star.length, star.y + star.length);
-                ctx.stroke();
-
-                // 添加流星头部光晕
-                if (star.opacity > 0.5) {
-                    ctx.fillStyle = `rgba(255, 255, 255, ${star.opacity * 0.5})`;
-                    ctx.beginPath();
-                    ctx.arc(star.x, star.y, star.width * 1.5, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-
-                // 更新流星位置和透明度
-                star.x -= star.speedX;
-                star.y += star.speedY;
-                star.opacity -= star.fadeSpeed;
-                star.width = star.opacity * 2; // 流星随着消失变细
-
-                // 移除超出屏幕或完全消失的流星
-                if (star.opacity <= 0 || star.x < 0 || star.y > canvas.height) {
-                    shootingStars.splice(i, 1);
-                }
-            }
-
-            requestAnimationFrame(drawStars);
-        }
-
-        // 生成流星
-        function generateShootingStar(x, y, isUserGenerated = false) {
-            const startX = x || Math.random() * canvas.width;
-            const startY = y || Math.random() * canvas.height * 0.2;
-            const length = Math.random() * 100 + 50;
-            const speed = Math.random() * 5 + 5;
-            const colorHue = Math.random() * 60; // 暖色调 (0-60)
-
-            if (isUserGenerated) {
-                score++;
-                scoreDiv.textContent = `流星: ${score}`;
-
-                // 用户交互时尝试初始化音乐（解决移动端自动播放限制）
-                if (!musicInitialized) {
-                    initMusic();
-                }
-            }
-
-            shootingStars.push({
-                x: startX,
-                y: startY,
-                length: length,
-                speedX: speed,
-                speedY: speed,
-                opacity: 1,
-                width: 2,
-                fadeSpeed: Math.random() * 0.01 + 0.005,
-                color: `hsla(${colorHue}, 100%, 80%, 1)`
-            });
-        }
-
-        // 自动生成流星
-        setInterval(() => {
-            if (shootingStars.length < 20) { // 限制流星数量
-                generateShootingStar();
-            }
-        }, 500);
-
-        // 音乐控制函数
-        function initMusic() {
-            if (musicInitialized) return;
-
-            musicInitialized = true;
-            loadMusic();
-
-            // 显示音乐信息
-            musicInfo.style.display = 'block';
-            musicInfo.textContent = `正在播放: ${currentTrack.name}`;
-
-            // 3秒后淡出音乐信息
-            setTimeout(() => {
-                musicInfo.style.opacity = '0';
+        // 创建消息容器
+        function createMessageBox(point, index, total) {
+            const box = document.createElement('div');
+            box.className = 'message-box';
+            
+            // 随机选择消息
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            box.textContent = randomMessage;
+            
+            // 随机颜色
+            box.style.backgroundColor = getRandomColor();
+            
+            // 获取消息框的实际尺寸（动态计算）
+            const boxSize = getMessageBoxSize();
+            
+            // 设置位置（居中定位）
+            box.style.left = (point.x - boxSize.width / 2) + 'px';
+            box.style.top = (point.y - boxSize.height / 2) + 'px';
+            
+            // 计算延迟时间（让容器逐个出现）
+            const delay = (index / total) * 10000; // 总共10秒完成所有动画（放慢速度）
+            
+            // 前5个容器立即显示，让用户知道效果正在工作
+            if (index < 1) {
                 setTimeout(() => {
-                    musicInfo.style.display = 'none';
-                    musicInfo.style.opacity = '1';
-                }, 1000);
-            }, 3000);
-        }
-
-        function loadMusic() {
-            bgMusic.src = currentTrack.url;
-            bgMusic.load();
-            musicInfo.textContent = `正在播放: ${currentTrack.name}`;
-
-            bgMusic.play().then(() => {
-                musicPlaying = true;
-                updateMusicIcon();
-
-                // 开始歌词更新循环
-                setInterval(() => {
-                    if (musicPlaying) {
-                        updateLyrics(bgMusic.currentTime);
-                    }
+                    box.classList.add('show');
                 }, 50);
-            }).catch(error => {
-                console.log("自动播放被阻止:", error);
-                musicInfo.textContent = "点击页面以播放音乐";
-            });
+            } else {
+                setTimeout(() => {
+                    box.classList.add('show');
+                }, delay);
+            }
+            
+            return box;
         }
 
-        function toggleMusic() {
-            if (!musicInitialized) {
-                initMusic();
+        // 创建爱心粒子
+        function createHeartParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'heart-particle';
+            particle.textContent = '❤';
+            
+            // 随机大小
+            const size = Math.random() * 15 + 15; // 15px - 30px
+            particle.style.fontSize = size + 'px';
+            
+            // 随机颜色透明度
+            const opacity = Math.random() * 0.4 + 0.3; // 0.3 - 0.7
+            const colors = [
+                `rgba(255, 105, 180, ${opacity})`, // 热粉色
+                `rgba(255, 20, 147, ${opacity})`,   // 深粉色
+                `rgba(255, 192, 203, ${opacity})`, // 粉红色
+                `rgba(255, 182, 193, ${opacity})`, // 浅粉色
+                `rgba(219, 112, 147, ${opacity})`  // 淡紫色
+            ];
+            particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+            
+            // 使用更均匀的分布方法，将屏幕分成多个区域
+            const screenWidth = window.innerWidth;
+            const numZones = 10; // 将屏幕分成10个区域
+            const zoneWidth = screenWidth / numZones;
+            
+            // 使用计数器确保均匀分布
+            particleCounter++;
+            const zoneIndex = particleCounter % numZones;
+            
+            // 在选定的区域内随机选择位置
+            const zoneStart = zoneIndex * zoneWidth;
+            const zoneEnd = (zoneIndex + 1) * zoneWidth;
+            const randomInZone = Math.random(); // 0-1之间的随机数
+            const startX = zoneStart + randomInZone * (zoneEnd - zoneStart);
+            
+            particle.style.left = startX + 'px';
+            
+            // 减小飘动距离，避免粒子偏移太多
+            const drift = (Math.random() - 0.5) * 100; // -50px 到 50px（减小范围）
+            particle.style.setProperty('--drift', drift + 'px');
+            
+            // 随机动画时长（3-8秒）
+            const duration = Math.random() * 5 + 3;
+            particle.style.animationDuration = duration + 's';
+            
+            // 随机延迟开始
+            const delay = Math.random() * 2;
+            particle.style.animationDelay = delay + 's';
+            
+            return particle;
+        }
+
+        // 粒子初始化标志
+        let particlesInitialized = false;
+        let particleInterval = null;
+        let particleCounter = 0; // 粒子计数器，用于均匀分布
+
+        // 初始化背景粒子
+        function initParticles() {
+            // 如果已经初始化，不再重复初始化
+            if (particlesInitialized) {
                 return;
             }
-
-            if (musicPlaying) {
-                bgMusic.pause();
-            } else {
-                bgMusic.play().catch(error => {
-                    console.log("播放失败:", error);
-                    musicInfo.style.display = 'block';
-                    musicInfo.textContent = "需要用户交互后才能播放音乐";
-                    setTimeout(() => {
-                        musicInfo.style.opacity = '0';
-                        setTimeout(() => {
-                            musicInfo.style.display = 'none';
-                            musicInfo.style.opacity = '1';
-                        }, 1000);
-                    }, 2000);
-                });
+            
+            const particlesContainer = document.getElementById('particlesContainer');
+            const particleCount = 30; // 粒子数量
+            
+            // 创建初始粒子
+            for (let i = 0; i < particleCount; i++) {
+                const particle = createHeartParticle();
+                particlesContainer.appendChild(particle);
             }
-            musicPlaying = !musicPlaying;
-            updateMusicIcon();
-        }
-
-        function updateMusicIcon() {
-            const icon = musicControl.querySelector('i');
-            if (musicPlaying) {
-                icon.classList.remove('fa-music');
-                icon.classList.add('fa-pause');
-            } else {
-                icon.classList.remove('fa-pause');
-                icon.classList.add('fa-music');
-            }
-        }
-
-        // 点击/触摸事件处理
-        function handleInteraction(x, y, isLongPress = false) {
-            const count = isLongPress ? 10 : 1;
-            for (let i = 0; i < count; i++) {
-                // 添加一些随机偏移，使长按时效果更丰富
-                const offsetX = isLongPress ? (Math.random() - 0.5) * 100 : 0;
-                const offsetY = isLongPress ? (Math.random() - 0.5) * 50 : 0;
-                generateShootingStar(x + offsetX, y + offsetY, true);
-            }
-
-            // 点击反馈效果 - 创建圆形波纹
-            if (!isLongPress) {
-                const ripple = {
-                    x: x,
-                    y: y,
-                    radius: 5,
-                    opacity: 0.8,
-                    color: 'white'
-                };
-
-                const rippleInterval = setInterval(() => {
-                    ripple.radius += 5;
-                    ripple.opacity -= 0.05;
-
-                    if (ripple.opacity <= 0) {
-                        clearInterval(rippleInterval);
+            
+            // 定期创建新粒子（保持屏幕上有一定数量的粒子）
+            particleInterval = setInterval(() => {
+                // 移除已经移出屏幕的粒子
+                const particles = particlesContainer.querySelectorAll('.heart-particle');
+                particles.forEach(p => {
+                    const rect = p.getBoundingClientRect();
+                    if (rect.bottom < -50) {
+                        p.remove();
                     }
-                }, 30);
-
-                // 临时绘制一次波纹
-                ctx.beginPath();
-                ctx.arc(ripple.x, ripple.y, ripple.radius, 0, Math.PI * 2);
-                ctx.strokeStyle = `rgba(255, 255, 255, ${ripple.opacity})`;
-                ctx.lineWidth = 2;
-                ctx.stroke();
-            }
+                });
+                
+                // 如果粒子数量少于设定值，添加新粒子
+                if (particles.length < particleCount) {
+                    const newParticle = createHeartParticle();
+                    particlesContainer.appendChild(newParticle);
+                }
+            }, 1000);
+            
+            particlesInitialized = true;
         }
 
-        // 鼠标/触摸事件监听
-        canvas.addEventListener('click', (e) => {
-            handleInteraction(e.clientX, e.clientY);
-        });
+        // 获取消息框尺寸（根据容器大小动态调整）
+        function getMessageBoxSize() {
+            const container = document.getElementById('heartContainer');
+            const containerWidth = container.getBoundingClientRect().width;
+            // 根据容器大小计算消息框尺寸
+            const boxSize = Math.max(40, Math.min(80, containerWidth * 0.1));
+            return {
+                width: boxSize,
+                height: boxSize
+            };
+        }
 
-        canvas.addEventListener('touchstart', (e) => {
-            e.preventDefault();
-            touchStartTime = Date.now();
-            const touch = e.touches[0];
-            longPressTimer = setTimeout(() => {
-                isLongPress = true;
-                handleInteraction(touch.clientX, touch.clientY, true);
-            }, 500);
-        });
+        // 清除现有消息框
+        function clearMessageBoxes() {
+            const container = document.getElementById('heartContainer');
+            const boxes = container.querySelectorAll('.message-box');
+            boxes.forEach(box => box.remove());
+        }
 
-        canvas.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            clearTimeout(longPressTimer);
-            if (!isLongPress && e.changedTouches[0]) {
-                const touch = e.changedTouches[0];
-                handleInteraction(touch.clientX, touch.clientY);
+        // 根据屏幕大小计算合适的点数
+        function getOptimalPointCount() {
+            const size = getContainerSize();
+            const area = size.width * size.height;
+            
+            // 根据容器面积动态调整点数
+            if (area < 200000) { // 小屏幕（约 450x450 以下）
+                return 50;
+            } else if (area < 400000) { // 中等屏幕（约 450x450 到 630x630）
+                return 65;
+            } else { // 大屏幕
+                return 80;
             }
-            isLongPress = false;
-        });
-
-        canvas.addEventListener('touchmove', (e) => {
-            e.preventDefault();
-            if (isLongPress && e.touches[0]) {
-                const touch = e.touches[0];
-                handleInteraction(touch.clientX, touch.clientY, true);
-            }
-        });
-
-        // 鼠标移动时在指针周围生成小星星
-        canvas.addEventListener('mousemove', (e) => {
-            if (Math.random() > 0.7) { // 70%的几率不生成，避免太多
-                generateShootingStar(
-                    e.clientX + (Math.random() - 0.5) * 50,
-                    e.y + (Math.random() - 0.5) * 50,
-                    true
-                );
-            }
-        });
-
-        // 音乐控制按钮事件
-        musicControl.addEventListener('click', (e) => {
-            e.stopPropagation();
-            toggleMusic();
-        });
-
-        // 窗口大小调整
-        window.addEventListener('resize', resizeCanvas);
-
-        // 音频事件监听
-        bgMusic.addEventListener('error', () => {
-            lyricsContainer.scrollTop = 0; // 重置滚动位置
-            musicInfo.style.display = 'block';
-            musicInfo.textContent = "音乐加载失败，请检查网络连接";
-            setTimeout(() => {
-                musicInfo.style.opacity = '0';
-                setTimeout(() => {
-                    musicInfo.style.display = 'none';
-                    musicInfo.style.opacity = '1';
-                }, 1000);
-            }, 2000);
-        });
+        }
 
         // 初始化
-        resizeCanvas();
-        drawStars();
-        initLyrics(); // 初始化歌词显示
+        function init() {
+            const container = document.getElementById('heartContainer');
+            
+            // 清除之前的内容
+            clearMessageBoxes();
+            
+            // 等待一帧确保容器尺寸已更新
+            requestAnimationFrame(() => {
+                // 在容器尺寸确定后再计算点数
+                const numPoints = getOptimalPointCount();
+                const points = generateHeartPoints(numPoints);
+                
+                console.log('生成的爱心点数:', numPoints);
+                console.log('容器尺寸:', getContainerSize());
+                console.log('第一个点的坐标:', points[0]);
+                
+                // 创建所有消息容器
+                points.forEach((point, index) => {
+                    const box = createMessageBox(point, index, numPoints);
+                    container.appendChild(box);
+                });
+                
+                console.log('创建的容器数量:', container.children.length);
+            });
+            
+            // 初始化背景粒子（只初始化一次）
+            initParticles();
+        }
 
-        // 5秒后淡出提示信息
-        setTimeout(() => {
-            let opacity = 1;
-            const fadeInterval = setInterval(() => {
-                opacity -= 0.02;
-                infoDiv.style.opacity = opacity;
-                if (opacity <= 0) {
-                    clearInterval(fadeInterval);
-                    infoDiv.style.display = 'none';
-                }
-            }, 50);
-        }, 5000);
+        // 防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
 
-        let isDragging = false;
-        let startY = 0;
-        let currentScrollTop = 0;
-        // 新增手动滚动标志
-        let isManualScrolling = false;
+        // 窗口大小改变时重新初始化
+        const resizeHandler = debounce(() => {
+            init();
+        }, 300);
 
-
-        // 触摸事件
-        lyricsContainer.addEventListener('touchstart', (e) => {
-            isManualScrolling = true;
-            startY = e.touches[0].clientY;
-            currentScrollTop = lyricsContainer.scrollTop;
-            isDragging = true;
-        });
-
-        lyricsContainer.addEventListener('touchmove', (e) => {
-            if (!isDragging) return;
-            const deltaY = e.touches[0].clientY - startY;
-            lyricsContainer.scrollTop = currentScrollTop - deltaY;
-            e.preventDefault();
-        });
-
-        lyricsContainer.addEventListener('touchend', () => {
-            isManualScrolling = false;
-            isDragging = false;
-        });
-
-        // 鼠标事件
-        lyricsContainer.addEventListener('mousedown', (e) => {
-            isManualScrolling = true;
-            startY = e.clientY;
-            currentScrollTop = lyricsContainer.scrollTop;
-            isDragging = true;
-        });
-
-        document.addEventListener('mousemove', (e) => {
-            if (!isDragging) return;
-            const deltaY = e.clientY - startY;
-            lyricsContainer.scrollTop = currentScrollTop - deltaY;
-            e.preventDefault();
-        });
-
-        document.addEventListener('mouseup', () => {
-            isManualScrolling = false;
-            isDragging = false;
+        // 页面加载完成后初始化
+        window.addEventListener('load', init);
+        
+        // 监听窗口大小改变
+        window.addEventListener('resize', resizeHandler);
+        
+        // 监听方向改变（移动设备）
+        window.addEventListener('orientationchange', () => {
+            setTimeout(init, 500);
         });
     </script>
 </body>
-
 </html>
